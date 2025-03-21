@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morras Tics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff66b2, #a855f7);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .post {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        input, textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background: #ff4081;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌸 Morras Tics 🌸</h1>
+    <div class="container">
+        <h2>Sube tu contenido</h2>
+        <textarea id="newPost" placeholder="Escribe un artículo, aviso o noticia..."></textarea>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="addPost()">Publicar</button>
+        
+        <div id="posts"></div>
+    </div>
+    
+    <script>
+        function addPost() {
+            let postText = document.getElementById("newPost").value;
+            let imageFile = document.getElementById("imageUpload").files[0];
+            
+            if (postText.trim() === "" && !imageFile) return;
+            
+            let postDiv = document.createElement("div");
+            postDiv.classList.add("post");
+            postDiv.innerHTML = `<p>${postText}</p>`;
+            
+            if (imageFile) {
+                let img = document.createElement("img");
+                img.src = URL.createObjectURL(imageFile);
+                img.style.maxWidth = "100%";
+                img.style.borderRadius = "10px";
+                postDiv.appendChild(img);
+            }
+            
+            document.getElementById("posts").appendChild(postDiv);
+            document.getElementById("newPost").value = "";
+            document.getElementById("imageUpload").value = "";
+        }
+    </script>
+</body>
+</html>
