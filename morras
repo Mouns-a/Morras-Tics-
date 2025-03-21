@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morras Tics</title>
     <style>
+<img src="image-removebg-preview.png" alt="Descripción de la imagen">
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #ff66b2, #a855f7);
