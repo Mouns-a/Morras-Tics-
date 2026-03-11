@@ -139,3 +139,17 @@ padding:30px;
 text-align:center;
 background:#12001f;
 }
+ .frase{
+margin-top:40px;
+max-width:700px;
+text-align:center;
+font-size:1.2rem;
+color:#e6ccff;
+}
+
+.autor{
+margin-top:10px;
+font-size:0.9rem;
+color:#b266ff;
+letter-spacing:2px;
+}
