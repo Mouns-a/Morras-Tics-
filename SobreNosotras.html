@@ -2,62 +2,93 @@
 <html lang="es">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sobre Nosotras | Morras TIC's</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre Nosotras | Morras TICs</title>
 
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<nav class="navbar">
+  <!-- CURSOR LUZ -->
+  <div class="cursor-luz"></div>
 
-<h2 class="logo">Morras TIC's</h2>
-
-<ul>
-<li><a href="index.html">Inicio</a></li>
-<li><a href="Articulos.html">Artículos</a></li>
-<li><a href="Sobre Nosotras.html">Sobre Nosotras</a></li>
-<li><a href="Noticias.html">Noticias</a></li>
-<li><a href="Avisos.html">Avisos</a></li>
-<li><a href="Contactos.html">Contacto</a></li>
-</ul>
-
-</nav>
-
-
-<section class="section">
-
-<h1>Sobre Morras TIC's</h1>
-
-<h2>¿Qué es Morras TICS?</h2>
-
-<p>
-Somos un programa de <strong>La Red por la Ciberseguridad</strong> que tiene como objetivo
-formar clubes estudiantiles en centros educativos, para fortalecer la inclusión
-de las mujeres en la industria de las Tecnologías de la Información (Tics)
-y Ciberseguridad.
-</p>
+  <!-- NAVBAR -->
+  <header>
+    <div class="logo-container">
+      <img src="assets/img/logo-morras-tics.png" alt="Logo Morras TICs" class="logo-img">
+      <span class="logo-text">Morras TICs</span>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Inicio</a>
+      <a href="Articulos.html">Artículos</a>
+      <a href="SobreNosotras.html" class="activo">Sobre Nosotras</a>
+      <a href="Noticias.html">Noticias</a>
+      <a href="Avisos.html">Avisos</a>
+      <a href="Contactos.html">Contacto</a>
+    </nav>
+  </header>
 
 
-<h2>¿Quiénes somos?</h2>
+ <!-- SECCIÓN SOBRE NOSOTRAS -->
+  <section class="section" style="padding-top:120px; max-width:1200px; margin: auto;">
 
-<p>
-Somos un club actualmente integrado por alumnas de la <strong>FES Acatlán</strong>.
-Nos estamos capacitando en Ciberseguridad y además buscamos compartir nuestros
-conocimientos con la comunidad universitaria para que más compañeras de diversas
-carreras se unan a nosotras.
-</p>
+    <h1 class="titulo glitch" data-text="Sobre Morras TICs">Sobre Morras TICs</h1>
 
-<p>
-Dentro del club existen diversos roles que las integrantes pueden elegir según
-sus preferencias e intereses. Estos roles se seleccionan de manera voluntaria,
-permitiendo que cada persona desempeñe una función que se ajuste a sus habilidades
-y deseos.
-</p>
+    <div class="bloque">
+      <div class="texto">
+        <h2 class="glitch" data-text="¿Qué es Morras TICs?">¿Qué es Morras TICs?</h2>
+        <p>
+          Somos un programa de <strong>La Red por la Ciberseguridad</strong> que tiene como objetivo
+          formar clubes estudiantiles en centros educativos, para fortalecer la inclusión
+          de las mujeres en la industria de las Tecnologías de la Información (Tics)
+          y Ciberseguridad.
+        </p>
+      </div>
+      <div class="imagen">
+        <img src="assets/img/que-es.jpg" alt="Morras TICs">
+        <div class="overlay"></div>
+      </div>
+    </div>
+
+    <div class="bloque reverse">
+      <div class="texto">
+        <h2 class="glitch" data-text="¿Quiénes somos?">¿Quiénes somos?</h2>
+        <p>
+          Somos un club actualmente integrado por alumnas de la <strong>FES Acatlán</strong>.
+          Nos estamos capacitando en Ciberseguridad y además buscamos compartir nuestros
+          conocimientos con la comunidad universitaria para que más compañeras de diversas
+          carreras se unan a nosotras.
+        </p>
+      </div>
+      <div class="imagen">
+        <img src="assets/img/quienes.jpg" alt="Equipo Morras TICs">
+        <div class="overlay"></div>
+      </div>
+    </div>
+
+    <p>
+      Dentro del club existen diversos roles que las integrantes pueden elegir según
+      sus preferencias e intereses. Estos roles se seleccionan de manera voluntaria,
+      permitiendo que cada persona desempeñe una función que se ajuste a sus habilidades
+      y deseos.
+    </p>
+
+    <h2 class="glitch" data-text="Roles dentro del Club">Roles dentro del Club</h2>
+
+    <!-- CARRUSEL DE ROLES -->
+    <div class="carrusel">
+      <div class="carrusel-track">
+        <img src="assets/img/rol1.jpg" alt="Rol 1">
+        <img src="assets/img/rol2.jpg" alt="Rol 2">
+        <img src="assets/img/rol3.jpg" alt="Rol 3">
+        <img src="assets/img/rol4.jpg" alt="Rol 4">
+        <img src="assets/img/rol5.jpg" alt="Rol 5">
+      </div>
+    </div>
 
 
 <h2>¿Por qué y cuáles roles existen dentro del club?</h2>
@@ -83,65 +114,64 @@ liderazgo y crecimiento que caracteriza a Morras TICs.
 
 
 <h2>Roles dentro del Club</h2>
-
-<div class="cards">
-
-<div class="card">
-<h3>Líder de Equipo</h3>
-<p>
-Encargadas de coordinar y dirigir comisiones específicas dentro del club.
-</p>
+<div class="carrusel">
+  <div class="carrusel-track">
+    <img src="assets/img/rol1.jpg">
+    <img src="assets/img/rol2.jpg">
+    <img src="assets/img/rol3.jpg">
+    <img src="assets/img/rol4.jpg">
+    <img src="assets/img/rol5.jpg">
+  </div>
 </div>
+<div class="acordeon">
+  <div class="item">
+    <button class="titulo-item">Líder de Equipo</button>
+    <div class="contenido-item">
+      Encargadas de coordinar y dirigir comisiones específicas dentro del club.
+    </div>
+  </div>
 
-<div class="card">
-<h3>Secretaria</h3>
-<p>
-Encargada de convocar a las reuniones semanales, llevar la minuta y el orden
-del día, así como realizar recordatorios sobre actividades y responsabilidades
-asignadas.
-</p>
+  <div class="item">
+    <button class="titulo-item">Secretaria</button>
+    <div class="contenido-item">
+      Encargada de convocar reuniones y llevar la minuta.
+    </div>
+  </div>
+
+  <div class="item">
+    <button class="titulo-item">Vocera</button>
+    <div class="contenido-item">
+      Representa al grupo ante instituciones.
+    </div>
+  </div>
+
+  <div class="item">
+    <button class="titulo-item">Corresponsal</button>
+    <div class="contenido-item">
+      Documenta actividades con fotos y contenido.
+    </div>
+  </div>
+
+  <div class="item">
+    <button class="titulo-item">Promotoras</button>
+    <div class="contenido-item">
+      Difunden actividades y atraen nuevas integrantes.
+    </div>
+  </div>
 </div>
+    <h2 style="text-align:center; margin-top:40px;" class="glitch" data-text="Transformando el futuro">
+      "Transformando el futuro, juntas en Morras TICs" ✨💜💻
+    </h2>
 
-<div class="card">
-<h3>Vocera</h3>
-<p>
-Encargada de representar y hablar en nombre del grupo ante las autoridades
-estudiantiles, el resto del alumnado, la Red por la Ciberseguridad y otras
-instituciones.
-</p>
-</div>
+  </section>
 
-<div class="card">
-<h3>Corresponsal</h3>
-<p>
-Encargada de documentar las actividades del club para su difusión,
-incluyendo reportajes escritos, fotografías, video y material audiovisual.
-</p>
-</div>
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Morras TICs</p>
+  </footer>
 
-<div class="card">
-<h3>Promotoras</h3>
-<p>
-Encargadas de difundir las actividades del club y motivar a más estudiantes
-a integrarse a la comunidad Morras TIC's.
-</p>
-</div>
-
-</div>
-
-
-<h2 style="text-align:center; margin-top:40px;">
-"Transformando el futuro, juntas en Morras TICs" ✨💜💻
-</h2>
-
-</section>
-
-
-<footer>
-
-<p>© 2026 Morras TIC's</p>
-
-</footer>
+  <!-- JS -->
+  <script src="js/script.js"></script>
 
 </body>
 </html>

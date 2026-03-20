@@ -310,3 +310,118 @@ header {
     rgba(0, 255, 255, 0.3)
   );
 }
+/* CURSOR LUZ */
+.cursor-luz {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #ff00ff40, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+/* GLITCH */
+.glitch {
+  position: relative;
+  color: #ff00ff;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.glitch::before {
+  color: #00ffff;
+  z-index: -1;
+  animation: glitchTop 2s infinite;
+}
+
+.glitch::after {
+  color: #ff00ff;
+  z-index: -2;
+  animation: glitchBottom 2s infinite;
+}
+
+@keyframes glitchTop {
+  0% { clip-path: inset(0 0 80% 0); transform: translate(-2px, -2px); }
+  50% { clip-path: inset(0 0 20% 0); transform: translate(2px, 2px); }
+  100% { clip-path: inset(0 0 80% 0); transform: translate(-2px, -2px); }
+}
+
+@keyframes glitchBottom {
+  0% { clip-path: inset(80% 0 0 0); transform: translate(2px, 2px); }
+  50% { clip-path: inset(20% 0 0 0); transform: translate(-2px, -2px); }
+  100% { clip-path: inset(80% 0 0 0); transform: translate(2px, 2px); }
+}
+/* BLOQUES CON IMAGEN */
+.bloque {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 60px 0;
+}
+
+.bloque.reverse {
+  flex-direction: row-reverse;
+}
+
+.imagen img {
+  width: 350px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #ff00ff50;
+}
+
+/* CARRUSEL */
+.carrusel {
+  overflow: hidden;
+  margin: 40px 0;
+}
+
+.carrusel-track {
+  display: flex;
+  animation: scroll 15s linear infinite;
+}
+
+.carrusel img {
+  width: 250px;
+  margin-right: 20px;
+  border-radius: 15px;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ACORDEÓN */
+.acordeon {
+  max-width: 800px;
+  margin: auto;
+}
+
+.item {
+  margin-bottom: 10px;
+}
+
+.titulo-item {
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 15px;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid #ff00ff;
+}
+
+.contenido-item {
+  display: none;
+  padding: 15px;
+  background: #1a001a;
+}

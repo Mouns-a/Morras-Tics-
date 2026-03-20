@@ -69,4 +69,38 @@ function animate() {
 }
 
 animate();
+// PARALLAX IMAGEN ÉPICA
+window.addEventListener("scroll", () => {
+  const img = document.querySelector(".imagen-epica img");
+  if (!img) return;
+
+  let scroll = window.scrollY;
+  img.style.transform = `translateY(${scroll * 0.2}px) scale(1.05)`;
+});
+
+// CURSOR LUZ
+const cursor = document.querySelector(".cursor-luz");
+
+document.addEventListener("mousemove", (e) => {
+  cursor.style.left = e.clientX + "px";
+  cursor.style.top = e.clientY + "px";
+});
 /* Final Index*/
+
+const botones = document.querySelectorAll(".titulo-item");
+
+botones.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const item = btn.parentElement;
+    const contenido = btn.nextElementSibling;
+
+    // Alternar visualmente el acordeón
+    if (contenido.style.display === "block") {
+      contenido.style.display = "none";
+      item.classList.remove("active");
+    } else {
+      contenido.style.display = "block";
+      item.classList.add("active");
+    }
+  });
+});
