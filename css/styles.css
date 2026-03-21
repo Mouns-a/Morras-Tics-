@@ -311,17 +311,16 @@ header {
     rgba(0, 255, 255, 0.3)
   );
 }
-/* CURSOR LUZ GLOBAL */
+/* CURSOR LUZ */
 .cursor-luz {
   position: fixed;
   width: 200px;
   height: 200px;
   background: radial-gradient(circle, #ff00ff40, transparent 70%);
-  pointer-events: none; /* No bloquea clics */
+  pointer-events: none;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999; /* Siempre encima de todo */
-  transition: left 0.05s, top 0.05s; /* Suaviza movimiento */
+  z-index: 999;
 }
 /* GLITCH */
 .glitch {
@@ -339,7 +338,7 @@ header {
 }
 
 .glitch::before {
-  color: #9613e2;
+  color: #00ffff;
   z-index: -1;
   animation: glitchTop 2s infinite;
 }
@@ -401,14 +400,18 @@ header {
   to { transform: translateX(-50%); }
 }
 
-/* ACORDEÓN */
 .acordeon {
   max-width: 800px;
-  margin: auto;
+  margin: 40px auto;
 }
 
 .item {
   margin-bottom: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid #ff00ff;
+  box-shadow: 0 0 15px rgba(255,0,255,0.2);
 }
 
 .titulo-item {
@@ -419,31 +422,28 @@ header {
   padding: 15px;
   text-align: left;
   cursor: pointer;
-  border: 1px solid #ff00ff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  position: relative;
+  transition: 0.3s;
+}
+
+/* Agregar indicador de flecha */
+.titulo-item::after {
+  content: "▼";
+  position: absolute;
+  right: 20px;
+  transition: transform 0.3s;
+}
+
+.item.active .titulo-item::after {
+  transform: rotate(-180deg);
 }
 
 .contenido-item {
   display: none;
   padding: 15px;
-  background: #1a001a;
-}
-/* CURSOR LUZ GLOBAL MEJORADO */
-.cursor-luz {
-  position: fixed;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, #ff00ff40, transparent 70%);
-  pointer-events: none; /* No bloquea clics */
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999; /* Siempre encima de todo */
-  transition: left 0.05s, top 0.05s, width 0.2s, height 0.2s, background 0.2s;
-}
-
-/* Cursor más grande al pasar sobre links y botones */
-a:hover ~ .cursor-luz,
-button:hover ~ .cursor-luz {
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, #ff00ff80, transparent 70%);
+  background: rgba(255,255,255,0.05);
+  border-top: 1px solid #ff00ff;
+  font-size: 0.95rem;
 }

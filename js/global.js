@@ -1,96 +1,98 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // CURSOR
-  const cursor = document.createElement("div");
-  cursor.classList.add("cursor-luz");
-  document.body.appendChild(cursor);
+const canvas = document.getElementById('circuitos');
+const ctx = canvas.getContext('2d');
 
-  let mouseX = 0, mouseY = 0;
-  let posX = 0, posY = 0;
-  const speed = 0.15;
-
-  // Partículas
-  const stars = [];
-  const maxStars = 40;
-
-  // Canvas para rastro
-  const canvas = document.createElement("canvas");
-  canvas.style.position = "fixed";
-  canvas.style.top = 0;
-  canvas.style.left = 0;
-  canvas.style.pointerEvents = "none";
+function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  canvas.style.zIndex = 998;
-  document.body.appendChild(canvas);
-  const ctx = canvas.getContext("2d");
+}
+window.addEventListener('resize', resize);
+resize();
 
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+const nodes = [];
+const nodeCount = 80;
+
+// Crear nodos
+for (let i = 0; i < nodeCount; i++) {
+  nodes.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: (Math.random() - 0.5) * 1.5,
+    radius: 2 + Math.random() * 2
+  });
+}
+
+function drawConnections() {
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      let dx = nodes[i].x - nodes[j].x;
+      let dy = nodes[i].y - nodes[j].y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 120) {
+        let opacity = 1 - dist / 120;
+
+        ctx.strokeStyle = `rgba(0,255,255,${opacity})`;
+        ctx.lineWidth = 1;
+
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawConnections();
+
+  nodes.forEach(n => {
+    // Dibujar nodo
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "#00ffff";
+    ctx.fill();
+
+    // Movimiento
+    n.x += n.vx;
+    n.y += n.vy;
+
+    // Rebote
+    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
   });
 
-  // Captura mouse
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+/// Espera a que el DOM cargue
+document.addEventListener("DOMContentLoaded", () => {
+  // CURSOR LUZ
+  const cursor = document.querySelector(".cursor-luz");
+
   document.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
   });
 
-  // Hover links/botones
+  // Cursor al pasar sobre botones y enlaces
   document.querySelectorAll("a, button").forEach(el => {
     el.addEventListener("mouseenter", () => {
-      cursor.style.width = "220px";
-      cursor.style.height = "220px";
-      cursor.style.background = "radial-gradient(circle, #ff00ff50, #00ffff50, transparent 70%)";
+      cursor.style.width = "250px";
+      cursor.style.height = "250px";
+      cursor.style.background = "radial-gradient(circle, #ff00ff80, transparent 70%)";
     });
     el.addEventListener("mouseleave", () => {
-      cursor.style.width = "180px";
-      cursor.style.height = "180px";
-      cursor.style.background = "radial-gradient(circle, #ff00ff30, #00ffff30, transparent 70%)";
+      cursor.style.width = "200px";
+      cursor.style.height = "200px";
+      cursor.style.background = "radial-gradient(circle, #ff00ff40, transparent 70%)";
     });
   });
-
-  // Crear estrella
-  function createStar(x, y) {
-    stars.push({
-      x,
-      y,
-      radius: Math.random() * 1.5 + 0.5,
-      alpha: 1,
-      decay: Math.random() * 0.02 + 0.01,
-      color: Math.random() > 0.5 ? "#ff00ff" : "#00ffff"
-    });
-    if (stars.length > maxStars) stars.shift();
-  }
-
-  // Animación
-  function animate() {
-    // Suavizar cursor
-    posX += (mouseX - posX) * speed;
-    posY += (mouseY - posY) * speed;
-    cursor.style.left = posX + "px";
-    cursor.style.top = posY + "px";
-
-    // Crear estrella
-    createStar(posX, posY);
-
-    // Limpiar canvas parcialmente (rastro suave)
-    ctx.fillStyle = "rgba(0,0,0,0.03)"; // muy sutil
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Dibujar estrellas
-    stars.forEach((s, i) => {
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${parseInt(s.color.slice(1,3),16)}, ${parseInt(s.color.slice(3,5),16)}, ${parseInt(s.color.slice(5,7),16)}, ${s.alpha})`;
-      ctx.fill();
-      s.alpha -= s.decay;
-      if (s.alpha <= 0) stars.splice(i, 1);
-    });
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
 
   // ----------------------------
   // ACORDEÓN
