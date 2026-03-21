@@ -69,38 +69,45 @@ function animate() {
 }
 
 animate();
-// PARALLAX IMAGEN ÉPICA
-window.addEventListener("scroll", () => {
-  const img = document.querySelector(".imagen-epica img");
-  if (!img) return;
 
-  let scroll = window.scrollY;
-  img.style.transform = `translateY(${scroll * 0.2}px) scale(1.05)`;
-});
+/// Espera a que el DOM cargue
+document.addEventListener("DOMContentLoaded", () => {
+  // CURSOR LUZ
+  const cursor = document.querySelector(".cursor-luz");
 
-// CURSOR LUZ
-const cursor = document.querySelector(".cursor-luz");
+  document.addEventListener("mousemove", (e) => {
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+  });
 
-document.addEventListener("mousemove", (e) => {
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-});
-/* Final Index*/
+  // Cursor al pasar sobre botones y enlaces
+  document.querySelectorAll("a, button").forEach(el => {
+    el.addEventListener("mouseenter", () => {
+      cursor.style.width = "250px";
+      cursor.style.height = "250px";
+      cursor.style.background = "radial-gradient(circle, #ff00ff80, transparent 70%)";
+    });
+    el.addEventListener("mouseleave", () => {
+      cursor.style.width = "200px";
+      cursor.style.height = "200px";
+      cursor.style.background = "radial-gradient(circle, #ff00ff40, transparent 70%)";
+    });
+  });
 
-const botones = document.querySelectorAll(".titulo-item");
+  // ACORDEÓN
+  const botones = document.querySelectorAll(".titulo-item");
+  botones.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = btn.parentElement;
+      const contenido = btn.nextElementSibling;
 
-botones.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const item = btn.parentElement;
-    const contenido = btn.nextElementSibling;
-
-    // Alternar visualmente el acordeón
-    if (contenido.style.display === "block") {
-      contenido.style.display = "none";
-      item.classList.remove("active");
-    } else {
-      contenido.style.display = "block";
-      item.classList.add("active");
-    }
+      if (contenido.style.display === "block") {
+        contenido.style.display = "none";
+        item.classList.remove("active");
+      } else {
+        contenido.style.display = "block";
+        item.classList.add("active");
+      }
+    });
   });
 });

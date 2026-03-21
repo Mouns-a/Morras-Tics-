@@ -1,0 +1,39 @@
+/* CURSOR LUZ GLOBAL */
+.cursor-luz {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #ff00ff40, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: left 0.05s, top 0.05s;
+}
+
+/* ACORDEÓN ESTILO */
+.acordeon {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.item {
+  margin-bottom: 10px;
+}
+
+.titulo-item {
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 15px;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid #ff00ff;
+}
+
+.contenido-item {
+  display: none;
+  padding: 15px;
+  background: #1a001a;
+}

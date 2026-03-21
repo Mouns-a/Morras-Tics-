@@ -142,6 +142,7 @@ footer {
 
 /*Final de Index*/
 
+
 /* Menú*/
 
 /* NAVBAR */
@@ -310,16 +311,17 @@ header {
     rgba(0, 255, 255, 0.3)
   );
 }
-/* CURSOR LUZ */
+/* CURSOR LUZ GLOBAL */
 .cursor-luz {
   position: fixed;
   width: 200px;
   height: 200px;
   background: radial-gradient(circle, #ff00ff40, transparent 70%);
-  pointer-events: none;
+  pointer-events: none; /* No bloquea clics */
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  z-index: 999;
+  z-index: 9999; /* Siempre encima de todo */
+  transition: left 0.05s, top 0.05s; /* Suaviza movimiento */
 }
 /* GLITCH */
 .glitch {
@@ -337,7 +339,7 @@ header {
 }
 
 .glitch::before {
-  color: #00ffff;
+  color: #9613e2;
   z-index: -1;
   animation: glitchTop 2s infinite;
 }
@@ -424,4 +426,24 @@ header {
   display: none;
   padding: 15px;
   background: #1a001a;
+}
+/* CURSOR LUZ GLOBAL MEJORADO */
+.cursor-luz {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #ff00ff40, transparent 70%);
+  pointer-events: none; /* No bloquea clics */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Siempre encima de todo */
+  transition: left 0.05s, top 0.05s, width 0.2s, height 0.2s, background 0.2s;
+}
+
+/* Cursor más grande al pasar sobre links y botones */
+a:hover ~ .cursor-luz,
+button:hover ~ .cursor-luz {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #ff00ff80, transparent 70%);
 }
