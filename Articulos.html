@@ -2,63 +2,69 @@
 <html lang="es">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Artículos | Morras TIC's</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artículos | Morras TICs</title>
 
-<link rel="stylesheet" href="style.css">
+  <!-- ESTILOS -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/articulos.css">
+
+  <!-- FUENTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
+<!-- 💜 CURSOR -->
 <div class="cursor-luz"></div>
 
-<body>
-
-<header>
+<!-- HEADER -->
+<header class="main-header">
+  
   <div class="logo-container">
     <img src="assets/img/logo-morras-tics.png" alt="Logo Morras TICs" class="logo-img">
-    <span class="logo-text">Morras TICs</span>
+    <div class="logo-text-wrapper">
+        <span class="logo-text">Morras TICs</span>
+    </div>
   </div>
-    <nav class="nav">
-  <a href="index.html" class="activo">Inicio</a>
-  <a href="SobreNosotras.html">Sobre Nosotras</a>
-  <a href="Articulos.html">Artículos</a>
-  <a href="Contactos.html">Contacto</a>
-  <a href="Noticias.html">Noticias</a>
-  <a href="Avisos.html">Avisos</a>
-</nav>
+
+  <nav class="nav">
+    <a href="index.html">Inicio</a>
+    <a href="SobreNosotras.html">Sobre Nosotras</a>
+    <a href="Articulos.html" class="activo">Artículos</a>
+    <a href="Noticias.html">Noticias</a>
+    <a href="Avisos.html">Avisos</a>
+    <a href="Contactos.html">Contacto</a>
+  </nav>
 </header>
 
+  <!-- CONTENIDO -->
+  <section class="section articulos">
+     <div class="header-right">
+    <input type="text" id="buscador-articulos" placeholder="🔍 Buscar artículos..." class="buscador">
+  </div>
+<div id="stats-articulos" style="text-align:center; margin:20px;"></div>
+  <h1 class="titulo">🧠 Artículos Morras TICs</h1>
 
-<section class="section">
+  <p class="subtitulo">
+    Ideas, conocimiento y tecnología en un solo lugar ✨
+  </p>
 
-<h1>Artículos</h1>
+  <!-- CONTENEDOR DINÁMICO -->
+  <div id="contenedor-articulos" class="grid-articulos"></div>
 
-<div class="cards">
+  </section>
 
-<div class="card">
-<h3>¿Qué es la Ciberseguridad?</h3>
-<p>Cómo proteger tu información en internet.</p>
-</div>
+ <!-- FOOTER -->
+ <footer>
+  <p>© 2026 Morras TICs ✨</p>
+ </footer>
 
-<div class="card">
-<h3>Herramientas digitales</h3>
-<p>Aplicaciones útiles para estudiantes.</p>
-</div>
+ <!-- SCRIPTS -->
+ <script src="js/global.js"></script>
+ <script src="js/articulos.js"></script>
 
-<div class="card">
-<h3>Introducción a la programación</h3>
-<p>Primeros pasos en desarrollo web.</p>
-</div>
-
-</div>
-
-</section>
-
-<footer>
-<p>© 2026 Morras TIC's</p>
-</footer>
-
-</body>
-</html>
+ </body>
+ </html>

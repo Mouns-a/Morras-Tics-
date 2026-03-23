@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-<meta charset="UTF-8">
-<title>Noticias | Morras TIC's</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Noticias | Morras TIC's</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/noticias.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300
 </head>
-
-<body>
-
-<div class="cursor-luz"></div>
-
 <body>
 
 <header>
@@ -18,38 +15,54 @@
     <img src="assets/img/logo-morras-tics.png" alt="Logo Morras TICs" class="logo-img">
     <span class="logo-text">Morras TICs</span>
   </div>
-    <nav class="nav">
-  <a href="index.html" class="activo">Inicio</a>
-  <a href="SobreNosotras.html">Sobre Nosotras</a>
-  <a href="Articulos.html">Artículos</a>
-  <a href="Contactos.html">Contacto</a>
-  <a href="Noticias.html">Noticias</a>
-  <a href="Avisos.html">Avisos</a>
-</nav>
+  <nav class="nav">
+    <a href="index.html">Inicio</a>
+    <a href="SobreNosotras.html">Sobre Nosotras</a>
+    <a href="Articulos.html">Artículos</a>
+    <a href="Noticias.html" class="activo">Noticias</a>
+    <a href="Avisos.html">Avisos</a>
+    <a href="Contactos.html">Contacto</a>
+
+x
+  </nav>
 </header>
 
-
-</nav>
-
 <section class="section">
-
-<h1>Noticias</h1>
-
-<div class="card">
-<h3>Evento de Ciberseguridad</h3>
-<p>Morras TIC's participó en actividades de concientización digital.</p>
-</div>
-
-<div class="card">
-<h3>Nuevos talleres tecnológicos</h3>
-<p>Iniciamos nuevas capacitaciones en programación.</p>
-</div>
-
+    <h1 class="titulo-noticias">Últimas Noticias 📰</h1>
+    
+    <div id="lista-noticias-publico"></div>
 </section>
 
 <footer>
-<p>© 2026 Morras TIC's</p>
+    <p>© 2026 Morras TIC's</p>
 </footer>
+
+<script>
+    // Script rápido para mostrar las noticias guardadas
+    document.addEventListener("DOMContentLoaded", () => {
+        const contenedor = document.getElementById("lista-noticias-publico");
+        const noticias = JSON.parse(localStorage.getItem("noticias")) || [];
+
+        if (noticias.length === 0) {
+            contenedor.innerHTML = "<p>No hay noticias publicadas por ahora.</p>";
+            return;
+        }
+
+        noticias.reverse().forEach(n => {
+            const card = document.createElement("div");
+            card.className = "card-noticia";
+            card.innerHTML = `
+                ${n.imagen ? `<img src="${n.imagen}">` : ''}
+                <div class="card-content">
+                    <span class="fecha-noticia">📅 ${n.fecha}</span>
+                    <h3>${n.titulo}</h3>
+                    <p>${n.descripcion}</p>
+                </div>
+            `;
+            contenedor.appendChild(card);
+        });
+    });
+</script>
 
 </body>
 </html>

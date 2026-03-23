@@ -25,26 +25,54 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // GUARDAR AVISO
   // =========================
-  form.addEventListener("submit", e => {
-    e.preventDefault();
+form.addEventListener("submit", e => {
+  e.preventDefault();
 
+  const fileInput = document.getElementById("imagen");
+  const file = fileInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+
+      const nuevo = {
+        titulo: document.getElementById("titulo").value,
+        descripcion: document.getElementById("descripcion").value,
+        categoria: document.getElementById("categoria").value,
+        fecha: document.getElementById("fecha").value,
+        imagen: event.target.result, // 💥 imagen en base64
+        destacado: document.getElementById("destacado").checked,
+        urgente: document.getElementById("urgente").checked
+      };
+
+      avisos.push(nuevo);
+      localStorage.setItem("avisos", JSON.stringify(avisos));
+
+      form.reset();
+      render();
+    };
+
+    reader.readAsDataURL(file); // 💥 convierte imagen
+  } else {
+    // Si no sube imagen
     const nuevo = {
       titulo: document.getElementById("titulo").value,
       descripcion: document.getElementById("descripcion").value,
       categoria: document.getElementById("categoria").value,
       fecha: document.getElementById("fecha").value,
-      imagen: document.getElementById("imagen").value,
+      imagen: "",
       destacado: document.getElementById("destacado").checked,
       urgente: document.getElementById("urgente").checked
     };
 
     avisos.push(nuevo);
-
     localStorage.setItem("avisos", JSON.stringify(avisos));
 
     form.reset();
     render();
-  });
+  }
+});
 
   // =========================
   // MOSTRAR AVISOS

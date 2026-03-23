@@ -66,8 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       contenedor.appendChild(card);
     });
-
-    // 💫 ANIMACIÓN
     setTimeout(() => {
       document.querySelectorAll(".card-aviso").forEach(card => {
         card.classList.add("visible");
