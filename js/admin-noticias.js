@@ -20,8 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       noticias.push(nueva);
       localStorage.setItem("noticias", JSON.stringify(noticias));
-      form.reset();
-      render();
+
+      // Feedback visual: El botón cambia un segundo
+      const btn = form.querySelector("button");
+      const originalText = btn.innerHTML;
+      btn.innerHTML = "¡Publicado con éxito! ✅";
+      btn.style.background = "#4caf50";
+
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = ""; // Vuelve al CSS original
+        form.reset();
+        render();
+      }, 1500);
     };
 
     if (file) {
@@ -35,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function render() {
     lista.innerHTML = "";
-    // Usamos reverse para ver la más nueva primero
+    // Usamos reverse para ver la más nueva primero en el panel
     [...noticias].reverse().forEach((n, i) => {
       const realIndex = noticias.length - 1 - i;
       const div = document.createElement("div");
@@ -54,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.eliminar = (i) => {
-    if(confirm("¿Seguro que quieres borrar esta noticia?")) {
-        noticias.splice(i, 1);
-        localStorage.setItem("noticias", JSON.stringify(noticias));
-        render();
+    if (confirm("¿Seguro que quieres borrar esta noticia?")) {
+      noticias.splice(i, 1);
+      localStorage.setItem("noticias", JSON.stringify(noticias));
+      render();
     }
   };
 });

@@ -16,11 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render(articulos);
   actualizarStats();
-
+  articulos.sort((a, b) => b.likes - a.likes);
   // =========================
   // 🎨 RENDER
   // =========================
   function render(lista) {
+
 
     contenedor.innerHTML = "";
 
@@ -43,10 +44,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <h3>${a.titulo}</h3>
         <p><strong>${a.autor}</strong></p>
+        <small>${tiempoRelativo(a.fecha)}</small>
         <p>${a.contenido.substring(0, 100)}...</p>
 
         <div class="acciones">
-          <button onclick="like(${index})">❤️ ${a.likes}</button>
+          <button class="like-btn" onclick="like(${index})">❤️ ${a.likes}</button>
           <button onclick="toggleComentarios(${index})">💬 ${a.comentarios.length}</button>
         </div>
 
@@ -67,12 +69,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // ❤️ LIKE
   // =========================
-  window.like = function(index) {
-    articulos[index].likes++;
-    guardar();
-    render(articulos);
-    actualizarStats();
-  }
+window.like = function(index) {
+
+  articulos[index].likes++;
+
+  guardar();
+  render(articulos);
+  actualizarStats();
+
+  // 💥 animación
+  setTimeout(() => {
+    const btns = document.querySelectorAll(".like-btn");
+    if (btns[index]) {
+      btns[index].classList.add("liked");
+
+      setTimeout(() => {
+        btns[index].classList.remove("liked");
+      }, 200);
+    }
+  }, 50);
+}
 
   // =========================
   // 💬 MOSTRAR COMENTARIOS
@@ -85,19 +101,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // ✍️ COMENTAR
   // =========================
-  window.comentar = function(index) {
+window.comentar = function(index) {
 
-    const input = document.getElementById(`input-${index}`);
-    const texto = input.value.trim();
+  const nombre = document.getElementById(`nombre-${index}`).value.trim();
+  const texto = document.getElementById(`input-${index}`).value.trim();
 
-    if (!texto) return;
+  if (!nombre || !texto) return;
 
-    articulos[index].comentarios.push(texto);
+  articulos[index].comentarios.push({
+    nombre,
+    texto,
+    fecha: new Date().toISOString()
+  });
 
-    guardar();
-    render(articulos);
-    actualizarStats();
-  }
+  guardar();
+  render(articulos);
+  actualizarStats();
+}
 
   // =========================
   // 🔍 BUSCADOR
@@ -139,4 +159,19 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("articulos", JSON.stringify(articulos));
   }
 
+ function tiempoRelativo(fecha) {
+
+  const ahora = new Date();
+  const publicado = new Date(fecha);
+  const diff = Math.floor((ahora - publicado) / 1000);
+
+  const minutos = Math.floor(diff / 60);
+  const horas = Math.floor(diff / 3600);
+  const dias = Math.floor(diff / 86400);
+
+  if (diff < 60) return "Hace unos segundos";
+  if (minutos < 60) return `Hace ${minutos} min`;
+  if (horas < 24) return `Hace ${horas} h`;
+  return `Hace ${dias} días`;
+}
 });
