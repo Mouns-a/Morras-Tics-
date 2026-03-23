@@ -159,7 +159,7 @@ header {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(12px);
 
-  border-bottom: 1px solid rgba(255, 0, 255, 0.2);
+  border-bottom: 1px solid rgba(252,15,192, 0.76);
 }
 
 /* CONTENEDOR NAV */

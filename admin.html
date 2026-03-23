@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Avisos</title>
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/avisos.css">
+</head>
+
+<body>
+
+<div class="cursor-luz"></div>
+<div id="login-box" class="login-box">
+  <h2>Acceso Admin 🔐</h2>
+  <input type="password" id="password" placeholder="Contraseña">
+  <button onclick="login()">Entrar</button>
+</div>
+
+<section class="section" style="padding-top:120px; max-width:800px; margin:auto;">
+<section id="admin-panel" style="display:none; padding-top:120px; max-width:800px; margin:auto;"></section>
+  <h1 class="titulo">Panel Admin ⚡</h1>
+
+  <!-- FORMULARIO -->
+  <form id="form-aviso" class="form">
+    <input type="text" id="titulo" placeholder="Título" required>
+    <input type="text" id="descripcion" placeholder="Descripción" required>
+
+    <select id="categoria">
+      <option value="evento">Evento</option>
+      <option value="taller">Taller</option>
+      <option value="convocatoria">Convocatoria</option>
+    </select>
+
+    <input type="date" id="fecha" required>
+    <input type="text" id="imagen" placeholder="URL de imagen">
+
+<label>
+  <input type="checkbox" id="destacado"> Destacado ⭐
+</label>
+
+    <label>
+      <input type="checkbox" id="urgente"> Aviso urgente
+    </label>
+       <button type="submit">Agregar Aviso 🚀</button>
+
+  </form>
+
+<h2>📋 Avisos guardados</h2>
+
+<!-- 📊 PANEL DE ESTADÍSTICAS -->
+<div class="stats-panel">
+  <div class="stat">
+    <h3 id="total">0</h3>
+    <p>Total Avisos</p>
+  </div>
+
+  <div class="stat">
+    <h3 id="urgentes">0</h3>
+    <p>Urgentes</p>
+  </div>
+
+  <div class="stat">
+    <h3 id="categorias">0</h3>
+    <p>Categorías</p>
+  </div>
+ </div>
+
+ <!-- LISTA -->
+ <div id="lista-avisos"></div>
+
+</section>
+
+<script src="js/global.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

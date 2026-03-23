@@ -14,9 +14,11 @@
     rgba(0, 255, 255, 0.4) 30%,
     rgba(255, 0, 255, 0.2) 60%,
     transparent 80%
+  
   );
 
   filter: blur(20px);
+  mix-blend-mode: screen;
 }
 /* ACORDEÓN ESTILO */
 .acordeon {

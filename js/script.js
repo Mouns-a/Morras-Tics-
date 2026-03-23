@@ -19,7 +19,7 @@ for (let i = 0; i < nodeCount; i++) {
     vx: (Math.random() - 0.5) * 1.5,
     vy: (Math.random() - 0.5) * 1.5,
     radius: 2 + Math.random() * 2
-  });
+  });          
 }
 
 function drawConnections() {

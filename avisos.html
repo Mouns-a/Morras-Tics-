@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avisos | Morras TICs</title>
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/avisos.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="assets/img/logo-morras-tics.png" alt="Logo Morras TICs" class="logo-img">
+    <span class="logo-text">Morras TICs</span>
+  </div>
+
+  <nav class="nav">
+    <a href="index.html">Inicio</a>
+    <a href="SobreNosotras.html">Sobre Nosotras</a>
+    <a href="Articulos.html">Artículos</a>
+    <a href="Noticias.html">Noticias</a>
+    <a href="Avisos.html" class="activo">Avisos</a>
+    <a href="Contactos.html">Contacto</a>
+  </nav>
+</header>
+
+<section class="avisos" style="padding-top:120px;">
+
+  <h1 class="titulo glitch" data-text="Centro de Avisos">
+    Centro de Avisos
+  </h1>
+
+  <p class="subtitulo">
+    Sistema activo. Selecciona una categoría 👇
+  </p>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <button data-filtro="todos" class="activo">Todos</button>
+    <button data-filtro="evento">Eventos</button>
+    <button data-filtro="convocatoria">Convocatorias</button>
+    <button data-filtro="taller">Talleres</button>
+  </div>
+
+  <!-- CONTENEDOR DE AVISOS -->
+  <div class="cards-avisos" id="contenedor-avisos">
+  </div>
+
+</section>
+
+<footer>
+  <p>© 2026 Morras TICs ✨ </p>
+</footer>
+
+<div class="cursor-luz"></div>
+
+<script src="js/global.js"></script>
+<script src="js/avisos.js"></script>
+
+</body>
+</html> 
