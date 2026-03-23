@@ -20,51 +20,57 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // 🎨 RENDER
   // =========================
-  function render(lista) {
+function render(lista) {
 
+  contenedor.innerHTML = "";
 
-    contenedor.innerHTML = "";
-
-    if (lista.length === 0) {
-      contenedor.innerHTML = `
-        <div class="empty-state">
-          <h2>🧠 Sin artículos</h2>
-        </div>
-      `;
-      return;
-    }
-
-    lista.forEach((a, index) => {
-
-      const card = document.createElement("div");
-      card.classList.add("card-articulo");
-
-      card.innerHTML = `
-        ${a.imagen ? `<img src="${a.imagen}" class="img-articulo">` : ""}
-
-        <h3>${a.titulo}</h3>
-        <p><strong>${a.autor}</strong></p>
-        <small>${tiempoRelativo(a.fecha)}</small>
-        <p>${a.contenido.substring(0, 100)}...</p>
-
-        <div class="acciones">
-          <button class="like-btn" onclick="like(${index})">❤️ ${a.likes}</button>
-          <button onclick="toggleComentarios(${index})">💬 ${a.comentarios.length}</button>
-        </div>
-
-        <div class="comentarios" id="comentarios-${index}" style="display:none;">
-          <input type="text" id="input-${index}" placeholder="Escribe un comentario...">
-          <button onclick="comentar(${index})">Enviar</button>
-
-          <div class="lista-comentarios">
-            ${a.comentarios.map(c => `<p>💬 ${c}</p>`).join("")}
-          </div>
-        </div>
-      `;
-
-      contenedor.appendChild(card);
-    });
+  if (lista.length === 0) {
+    contenedor.innerHTML = `
+      <div class="empty-state">
+        <h2>🧠 Sin artículos</h2>
+      </div>
+    `;
+    return;
   }
+
+  // 🔥 ordenar por likes
+  lista.sort((a, b) => b.likes - a.likes);
+
+  lista.forEach((a, index) => {
+
+    const card = document.createElement("div");
+    card.classList.add("card-articulo");
+
+    card.innerHTML = `
+      ${a.imagen ? `<img src="${a.imagen}" class="img-articulo">` : ""}
+
+      <h3>${a.titulo}</h3>
+      <p><strong>${a.autor}</strong></p>
+      <small>${tiempoRelativo(a.fecha)}</small>
+      <p>${a.contenido.substring(0, 100)}...</p>
+
+      <div class="acciones">
+        <button class="like-btn" onclick="like(${index})">❤️ ${a.likes}</button>
+        <button onclick="toggleComentarios(${index})">💬 ${a.comentarios.length}</button>
+      </div>
+
+      <div class="comentarios" id="comentarios-${index}" style="display:none;">
+        
+        <input type="text" id="nombre-${index}" placeholder="Tu nombre">
+        <input type="text" id="input-${index}" placeholder="Escribe un comentario...">
+        <button onclick="comentar(${index})">Enviar</button>
+
+        <div class="lista-comentarios">
+          ${a.comentarios.map(c => `
+            <p>💬 <strong>${c.nombre}</strong>: ${c.texto}</p>
+          `).join("")}
+        </div>
+      </div>
+    `;
+
+    contenedor.appendChild(card);
+  });
+}
 
   // =========================
   // ❤️ LIKE

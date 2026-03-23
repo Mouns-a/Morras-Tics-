@@ -46,3 +46,9 @@
   padding: 15px;
   background: #1a001a;
 }
+body {
+  background: radial-gradient(circle at top, #0f0f1a, #050510);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}

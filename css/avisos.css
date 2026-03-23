@@ -426,19 +426,6 @@
   border-radius: 10px;
   margin-bottom: 10px;
 }
-/* noticias.css */
-:root {
-    --primary: #6a1b9a;
-    --secondary: #f06292;
-    --bg: #f8f9fa;
-    --glass: rgba(255, 255, 255, 0.9);
-}
-
-body {
-    background-color: var(--bg);
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    color: #333;
-}
 
 /* Contenedor principal */
 .section {
@@ -499,15 +486,6 @@ body {
     gap: 25px;
 }
 
-/* TARJETAS */
-.card-noticia {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    transition: 0.3s;
-    position: relative;
-}
 
 .card-noticia:hover { transform: translateY(-10px); }
 
