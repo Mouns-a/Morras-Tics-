@@ -79,12 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     actualizarStats();
   }
-  setTimeout(() => {
-  document.querySelectorAll(".card-aviso").forEach(card => {
-    card.classList.add("visible");
-  });
-  }, 100);
-
   // =========================
   // ELIMINAR
   // =========================
@@ -122,5 +116,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (password !== "morras123") {
     document.body.innerHTML = "<h1>⛔ Acceso denegado</h1>";
   }
+
+  // 💫 Animación segura
+setTimeout(() => {
+  const cards = document.querySelectorAll(".card-aviso");
+
+  if (cards.length === 0) return; // evita bugs
+
+  cards.forEach((card, i) => {
+    setTimeout(() => {
+      card.classList.add("visible");
+    }, i * 100); // efecto en cascada ✨
+  });
+
+}, 50);
 
 });
