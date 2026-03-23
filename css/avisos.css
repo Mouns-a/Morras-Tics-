@@ -218,3 +218,23 @@
   text-shadow: 0 0 8px #00ffff;
   font-weight: bold;
 }
+.card-aviso.urgente {
+  border: 1px solid #ff0055;
+  animation: pulso 1s infinite alternate;
+}
+
+@keyframes pulso {
+  from {
+    box-shadow: 0 0 10px #ff0055;
+  }
+  to {
+    box-shadow: 0 0 25px #ff0055;
+  }
+}
+.meta span:first-child {
+  background: #00ffff;
+  color: black;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}
