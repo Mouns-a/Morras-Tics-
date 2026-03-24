@@ -1,10 +1,11 @@
-
 import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Botón funcionando 🚀");
+  console.log("Panel admin listo 🚀");
+
   const form = document.getElementById("form-noticia");
   const lista = document.getElementById("lista-noticias");
+
   if (!form || !lista) {
     console.error("Faltan elementos en el HTML");
     return;
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .order("fecha", { ascending: false });
 
     if (error) {
-      console.error(error);
+      console.error("Error cargando noticias:", error);
       return;
     }
 
@@ -33,22 +34,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function render(noticias) {
     lista.innerHTML = "";
 
-    if (noticias.length === 0) {
+    if (!noticias || noticias.length === 0) {
       lista.innerHTML = "<p>Sin noticias aún</p>";
       return;
     }
 
     noticias.forEach(n => {
-
       const div = document.createElement("div");
       div.classList.add("card-admin");
 
       div.innerHTML = `
         ${n.imagen ? `<img src="${n.imagen}" class="img-admin">` : ""}
-
         <h3>${n.titulo}</h3>
         <p>${n.descripcion}</p>
-        <small>📅 ${n.fecha}</small>
+        <small>📅 ${n.fecha || ""}</small>
 
         <div class="acciones">
           <button onclick="eliminarNoticia('${n.id}')">❌ Eliminar</button>
@@ -60,10 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // ❌ ELIMINAR
+  // ❌ ELIMINAR NOTICIA
   // =========================
   window.eliminarNoticia = async (id) => {
-
     if (!confirm("¿Eliminar esta noticia?")) return;
 
     const { error } = await supabase
@@ -72,10 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
       .eq("id", id);
 
     if (error) {
-      console.error(error);
+      console.error("Error eliminando:", error);
       return;
     }
 
+    alert("🗑️ Noticia eliminada");
     cargarNoticias();
   };
 
@@ -85,16 +84,21 @@ document.addEventListener("DOMContentLoaded", () => {
   async function subirImagen(file) {
     const fileName = `noticias/${Date.now()}_${file.name}`;
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("imagenes")
       .upload(fileName, file);
 
     if (error) {
-      console.error(error);
+      console.error("Error subiendo imagen:", error);
       return "";
     }
 
-    return `${supabaseUrl}/storage/v1/object/public/imagenes/${data.path}`;
+    // Obtener URL pública correctamente
+    const { data } = supabase.storage
+      .from("imagenes")
+      .getPublicUrl(fileName);
+
+    return data.publicUrl;
   }
 
   // =========================
@@ -115,28 +119,28 @@ document.addEventListener("DOMContentLoaded", () => {
       imageUrl = await subirImagen(file);
     }
 
-    const { error } = await supabase.from("noticias").insert([{
-      titulo,
-      descripcion,
-      fecha,
-      imagen: imageUrl,
-      destacada
-    }]);
+    const { error } = await supabase
+      .from("noticias")
+      .insert([{
+        titulo,
+        descripcion,
+        fecha,
+        imagen: imageUrl,
+        destacada
+      }]);
 
     if (error) {
-      console.error(error);
+      console.error("Error insertando:", error);
       return;
     }
-    
+
     alert("🚀 Noticia publicada");
     form.reset();
     cargarNoticias();
-
   });
 
   // =========================
   // 🚀 INIT
   // =========================
   cargarNoticias();
-
 });
