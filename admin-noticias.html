@@ -1,5 +1,16 @@
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/adminnot.css">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Noticias</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/adminnot.css">
+</head>
+
+<body>
+
 <section class="admin-container">
 
   <h1 class="titulo">⚡ Panel Admin</h1>
@@ -28,24 +39,39 @@
     <div class="admin-card">
       <h2>➕ Crear</h2>
 
-      <form id="form-aviso" class="form">
-        <label>
-  <input type="checkbox" id="destacado"> ⭐ Destacar noticia
-</label>
+      <form id="form-noticia" class="form">
 
-<button type="button" id="preview-btn">👁️ Vista previa</button>
+        <input type="text" id="titulo" placeholder="Título" required>
+
+        <textarea id="descripcion" placeholder="Descripción"></textarea>
+
+        <input type="date" id="fecha">
+
+        <input type="file" id="imagen">
+
+        <label>
+          <input type="checkbox" id="destacada"> ⭐ Destacar noticia
+        </label>
+
+        <button type="submit">Publicar 🚀</button>
+        <button type="button" id="preview-btn">👁️ Vista previa</button>
+
       </form>
+
       <div id="preview" class="preview-box"></div>
     </div>
 
     <!-- LISTA -->
     <div class="admin-card">
       <h2>📋 Publicaciones</h2>
-      <div id="lista-avisos"></div>
+      <div id="lista-noticias"></div>
     </div>
 
   </div>
 
 </section>
 
-<script src="js/admin-noticias.js"></script>
+<script type="module" src="js/admin-noticias.js"></script>
+
+</body>
+</html>

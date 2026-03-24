@@ -1,18 +1,42 @@
+import { supabase, supabaseUrl } from "./supabase.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("form-aviso");
   const lista = document.getElementById("lista-avisos");
 
-  let avisos = JSON.parse(localStorage.getItem("avisos")) || [];
+  // =========================
+  // 🔐 LOGIN SIMPLE
+  // =========================
+  const password = prompt("Acceso restringido");
 
-  avisos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  if (password !== "morras123") {
+    document.body.innerHTML = "<h1>⛔ Acceso denegado</h1>";
+    return;
+  }
 
-  render();
+  // =========================
+  // 📥 OBTENER AVISOS
+  // =========================
+  async function cargarAvisos() {
+    const { data, error } = await supabase
+      .from("noticias")
+      .select("*")
+      .order("fecha", { ascending: false });
+
+    if (error) {
+      console.error("Error al cargar:", error);
+      return;
+    }
+
+    render(data);
+    actualizarStats(data);
+  }
 
   // =========================
   // 📊 STATS
   // =========================
-  function actualizarStats() {
+  function actualizarStats(avisos) {
     document.getElementById("total").innerText = avisos.length;
 
     const urgentes = avisos.filter(a => a.urgente).length;
@@ -23,66 +47,70 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // GUARDAR AVISO
+  // 🖼️ SUBIR IMAGEN
   // =========================
-form.addEventListener("submit", e => {
-  e.preventDefault();
+  async function subirImagen(file) {
+    const fileName = `noticias/${Date.now()}_${file.name}`;
 
-  const fileInput = document.getElementById("imagen");
-  const file = fileInput.files[0];
+    const { data, error } = await supabase.storage
+      .from("imagenes")
+      .upload(fileName, file);
 
-  if (file) {
-    const reader = new FileReader();
+    if (error) {
+      console.error("Error subiendo imagen:", error);
+      return "";
+    }
 
-    reader.onload = function (event) {
+    return `${supabaseUrl}/storage/v1/object/public/imagenes/${data.path}`;
+  }
 
-      const nuevo = {
-        titulo: document.getElementById("titulo").value,
-        descripcion: document.getElementById("descripcion").value,
-        categoria: document.getElementById("categoria").value,
-        fecha: document.getElementById("fecha").value,
-        imagen: event.target.result, // 💥 imagen en base64
-        destacado: document.getElementById("destacado").checked,
-        urgente: document.getElementById("urgente").checked
-      };
+  // =========================
+  // 📤 GUARDAR AVISO
+  // =========================
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      avisos.push(nuevo);
-      localStorage.setItem("avisos", JSON.stringify(avisos));
+    const titulo = document.getElementById("titulo").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const categoria = document.getElementById("categoria").value;
+    const fecha = document.getElementById("fecha").value;
+    const urgente = document.getElementById("urgente").checked;
+    const destacado = document.getElementById("destacado").checked;
 
-      form.reset();
-      render();
-    };
+    const file = document.getElementById("imagen").files[0];
 
-    reader.readAsDataURL(file); // 💥 convierte imagen
-  } else {
-    // Si no sube imagen
-    const nuevo = {
-      titulo: document.getElementById("titulo").value,
-      descripcion: document.getElementById("descripcion").value,
-      categoria: document.getElementById("categoria").value,
-      fecha: document.getElementById("fecha").value,
-      imagen: "",
-      destacado: document.getElementById("destacado").checked,
-      urgente: document.getElementById("urgente").checked
-    };
+    let imageUrl = "";
+    if (file) {
+      imageUrl = await subirImagen(file);
+    }
 
-    avisos.push(nuevo);
-    localStorage.setItem("avisos", JSON.stringify(avisos));
+    const { error } = await supabase.from("noticias").insert([{
+      titulo,
+      descripcion,
+      categoria,
+      fecha,
+      urgente,
+      destacado,
+      imagen: imageUrl
+    }]);
+
+    if (error) {
+      console.error("Error al guardar:", error);
+      return;
+    }
 
     form.reset();
-    render();
-  }
-});
+    cargarAvisos();
+  });
 
   // =========================
-  // MOSTRAR AVISOS
+  // 🖥️ RENDER
   // =========================
-  function render() {
+  function render(avisos) {
     lista.innerHTML = "";
 
-    avisos.forEach((aviso, index) => {
+    avisos.forEach((aviso) => {
       const div = document.createElement("div");
-
       div.classList.add("aviso-card");
 
       div.innerHTML = `
@@ -93,70 +121,50 @@ form.addEventListener("submit", e => {
 
         <p class="descripcion">${aviso.descripcion}</p>
 
+        ${aviso.imagen ? `<img src="${aviso.imagen}" class="imagen-aviso">` : ""}
+
         <div class="aviso-footer">
           <span class="categoria">${aviso.categoria}</span>
           <span class="fecha">${aviso.fecha}</span>
         </div>
 
-        <button onclick="editar(${index})">✏️ Editar</button>
-        <button onclick="eliminar(${index})">❌ Eliminar</button>
+        <button onclick="eliminar('${aviso.id}')">❌ Eliminar</button>
       `;
 
       lista.appendChild(div);
     });
 
-    actualizarStats();
-  }
-  // =========================
-  // ELIMINAR
-  // =========================
-  window.eliminar = function(index) {
-    avisos.splice(index, 1);
-    localStorage.setItem("avisos", JSON.stringify(avisos));
-    render();
-  };
-
-  // =========================
-  // EDITAR
-  // =========================
-  window.editar = function(index) {
-    const aviso = avisos[index];
-
-    document.getElementById("titulo").value = aviso.titulo;
-    document.getElementById("descripcion").value = aviso.descripcion;
-    document.getElementById("categoria").value = aviso.categoria;
-    document.getElementById("fecha").value = aviso.fecha;
-    document.getElementById("imagen").value = aviso.imagen || "";
-    document.getElementById("destacado").checked = aviso.destacado || false;
-    document.getElementById("urgente").checked = aviso.urgente;
-
-    avisos.splice(index, 1);
-
-    localStorage.setItem("avisos", JSON.stringify(avisos));
-    render();
-  };
-
-  // =========================
-  // 🔐 LOGIN SIMPLE
-  // =========================
-  const password = prompt("Acceso restringido");
-
-  if (password !== "morras123") {
-    document.body.innerHTML = "<h1>⛔ Acceso denegado</h1>";
-  }
-
-  // 💫 Animación segura
-setTimeout(() => {
-  const cards = document.querySelectorAll(".card-aviso");
-
-  if (cards.length === 0) return; // evita bugs
-
-  cards.forEach((card, i) => {
+    // ✨ Animación
     setTimeout(() => {
-      card.classList.add("visible");
-    }, i * 100); // efecto en cascada ✨
-  });
+      const cards = document.querySelectorAll(".aviso-card");
+      cards.forEach((card, i) => {
+        setTimeout(() => {
+          card.classList.add("visible");
+        }, i * 100);
+      });
+    }, 50);
+  }
 
-}, 50);
+  // =========================
+  // ❌ ELIMINAR
+  // =========================
+  window.eliminar = async function(id) {
+    const { error } = await supabase
+      .from("noticias")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error al eliminar:", error);
+      return;
+    }
+
+    cargarAvisos();
+  };
+
+  // =========================
+  // 🚀 INIT
+  // =========================
+  cargarAvisos();
 
 });

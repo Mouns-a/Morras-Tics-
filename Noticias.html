@@ -51,37 +51,8 @@
 <div class="cursor-luz"></div>
 
 <!-- ✅ JS BIEN SEPARADO -->
+ <script type="module" src="js/noticias.js"></script>
 <script src="js/global.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const contenedor = document.getElementById("contenedor-noticias");
-  const noticias = JSON.parse(localStorage.getItem("noticias")) || [];
-
-  if (noticias.length === 0) {
-    contenedor.innerHTML = "<p>No hay noticias publicadas por ahora.</p>";
-    return;
-  }
-
-  noticias.reverse().forEach(n => {
-    const card = document.createElement("div");
-    card.className = "card-noticia";
-
-    card.innerHTML = `
-      ${n.imagen ? `<img src="${n.imagen}">` : ''}
-      <div class="card-content">
-        <span class="fecha-noticia">📅 ${n.fecha}</span>
-        <h3>${n.titulo}</h3>
-        <p>${n.descripcion}</p>
-      </div>
-    `;
-
-    contenedor.appendChild(card);
-  });
-
-});
-</script>
 
 </body>
 </html>

@@ -1,31 +1,40 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { supabase } from "./supabase.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
 
   const contenedor = document.getElementById("contenedor-avisos");
+  const buscador = document.getElementById("buscador");
+  const botonesFiltro = document.querySelectorAll(".filtros button");
 
   if (!contenedor) {
     console.error("❌ No existe #contenedor-avisos en el HTML");
     return;
   }
 
-  let avisos = JSON.parse(localStorage.getItem("avisos")) || [];
+  let avisos = [];
 
-  // 🧠 LIMPIEZA DE DATOS
-  avisos = avisos.filter(a => {
-    return a.titulo && a.descripcion && !isNaN(new Date(a.fecha));
-  });
+  // =========================
+  // 📥 CARGAR AVISOS
+  // =========================
+  async function cargarAvisos() {
+    const { data, error } = await supabase
+      .from("avisos")
+      .select("*")
+      .order("fecha", { ascending: false });
 
-  // 🔥 ORDENAR (IMPORTANTE: aquí va)
-  avisos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    if (error) {
+      console.error("Error:", error);
+      return;
+    }
 
-  console.log("📦 Avisos encontrados:", avisos);
-
-  render(avisos);
+    avisos = data || [];
+    render(avisos);
+  }
 
   // =========================
   // 🎨 RENDER
   // =========================
   function render(lista) {
-
     contenedor.innerHTML = "";
 
     if (lista.length === 0) {
@@ -39,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     lista.forEach(aviso => {
-
       const card = document.createElement("div");
       card.classList.add("card-aviso");
 
@@ -47,15 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (aviso.destacado) card.classList.add("destacado");
 
       card.innerHTML = `
-        ${aviso.imagen ? `<img src="${aviso.imagen}" class="img-aviso">` : ""}
+        ${aviso.imagen ? `<img src="${aviso.imagen}" class="img-aviso" alt="${aviso.titulo}">` : ""}
 
         <div class="contenido">
           <h3>${aviso.titulo}</h3>
           <p>${aviso.descripcion}</p>
 
           <div class="meta">
-            <span>${aviso.categoria}</span>
-            <span>${aviso.fecha}</span>
+            <span class="tag-cat">${aviso.categoria || 'General'}</span>
+            <span>📅 ${aviso.fecha}</span>
           </div>
 
           <div class="contador" data-fecha="${aviso.fecha}"></div>
@@ -66,35 +74,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
       contenedor.appendChild(card);
     });
+
+    // ✨ Animación
     setTimeout(() => {
       document.querySelectorAll(".card-aviso").forEach(card => {
         card.classList.add("visible");
       });
     }, 50);
 
-    // ⏳ CONTADOR
     iniciarContadores();
   }
 
   // =========================
-  // ⏳ CONTADOR
+  // ⏳ CONTADORES
   // =========================
   function iniciarContadores() {
     const contadores = document.querySelectorAll(".contador");
 
     contadores.forEach(contador => {
-      const fecha = contador.getAttribute("data-fecha");
+      const fechaMeta = contador.getAttribute("data-fecha");
+      if (!fechaMeta) return;
 
-      if (!fecha) return;
-
-      function actualizar() {
+      const intervalo = setInterval(() => {
         const ahora = new Date();
-        const objetivo = new Date(fecha);
+        const objetivo = new Date(fechaMeta);
         const diff = objetivo - ahora;
 
         if (diff <= 0) {
           contador.innerHTML = "⏱️ Finalizado";
           contador.style.color = "#ff0055";
+          clearInterval(intervalo);
           return;
         }
 
@@ -104,19 +113,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const segundos = Math.floor((diff / 1000) % 60);
 
         contador.innerHTML = `⏳ ${dias}d ${horas}h ${minutos}m ${segundos}s`;
-      }
-
-      actualizar();
-      setInterval(actualizar, 1000);
+      }, 1000);
     });
   }
 
   // =========================
   // 🎛️ FILTROS
   // =========================
-  const botones = document.querySelectorAll(".filtros button");
-
-  botones.forEach(btn => {
+  botonesFiltro.forEach(btn => {
     btn.addEventListener("click", () => {
 
       document.querySelector(".filtros .activo")?.classList.remove("activo");
@@ -124,20 +128,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const filtro = btn.dataset.filtro;
 
-      if (filtro === "todos") {
-        render(avisos);
-      } else {
-        const filtrados = avisos.filter(a => a.categoria === filtro);
-        render(filtrados);
-      }
+      const filtrados = (filtro === "todos")
+        ? avisos
+        : avisos.filter(a => a.categoria === filtro);
+
+      render(filtrados);
     });
   });
 
   // =========================
   // 🔍 BUSCADOR
   // =========================
-  const buscador = document.getElementById("buscador");
-
   if (buscador) {
     buscador.addEventListener("input", () => {
       const texto = buscador.value.toLowerCase();
@@ -150,5 +151,10 @@ document.addEventListener("DOMContentLoaded", () => {
       render(filtrados);
     });
   }
+
+  // =========================
+  // 🚀 INIT
+  // =========================
+  cargarAvisos();
 
 });

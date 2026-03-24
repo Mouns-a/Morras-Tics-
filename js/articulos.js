@@ -1,133 +1,151 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { supabase } from "./supabase.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
 
   const contenedor = document.getElementById("contenedor-articulos");
   const buscador = document.getElementById("buscador-articulos");
   const stats = document.getElementById("stats-articulos");
 
-  let articulos = JSON.parse(localStorage.getItem("articulos")) || [];
+  let articulos = [];
 
-  // 🔧 NORMALIZAR DATOS
-  articulos.forEach(a => {
-    if (!a.likes) a.likes = 0;
-    if (!a.comentarios) a.comentarios = [];
-  });
+  // =========================
+  // 📥 CARGAR ARTÍCULOS
+  // =========================
+  async function cargarArticulos() {
+    const { data, error } = await supabase
+      .from("articulos")
+      .select("*")
+      .order("likes", { ascending: false });
 
-  guardar();
+    if (error) {
+      console.error("Error:", error);
+      return;
+    }
 
-  render(articulos);
-  actualizarStats();
-  articulos.sort((a, b) => b.likes - a.likes);
+    // Normalizar
+    articulos = data.map(a => ({
+      ...a,
+      likes: a.likes || 0,
+      comentarios: a.comentarios || []
+    }));
+
+    render(articulos);
+    actualizarStats();
+  }
+
   // =========================
   // 🎨 RENDER
   // =========================
-function render(lista) {
+  function render(lista) {
+    contenedor.innerHTML = "";
 
-  contenedor.innerHTML = "";
-
-  if (lista.length === 0) {
-    contenedor.innerHTML = `
-      <div class="empty-state">
-        <h2>🧠 Sin artículos</h2>
-      </div>
-    `;
-    return;
-  }
-
-  // 🔥 ordenar por likes
-  lista.sort((a, b) => b.likes - a.likes);
-
-  lista.forEach((a, index) => {
-
-    const card = document.createElement("div");
-    card.classList.add("card-articulo");
-
-    card.innerHTML = `
-      ${a.imagen ? `<img src="${a.imagen}" class="img-articulo">` : ""}
-
-      <h3>${a.titulo}</h3>
-      <p><strong>${a.autor}</strong></p>
-      <small>${tiempoRelativo(a.fecha)}</small>
-      <p>${a.contenido.substring(0, 100)}...</p>
-
-      <div class="acciones">
-        <button class="like-btn" onclick="like(${index})">❤️ ${a.likes}</button>
-        <button onclick="toggleComentarios(${index})">💬 ${a.comentarios.length}</button>
-      </div>
-
-      <div class="comentarios" id="comentarios-${index}" style="display:none;">
-        
-        <input type="text" id="nombre-${index}" placeholder="Tu nombre">
-        <input type="text" id="input-${index}" placeholder="Escribe un comentario...">
-        <button onclick="comentar(${index})">Enviar</button>
-
-        <div class="lista-comentarios">
-          ${a.comentarios.map(c => `
-            <p>💬 <strong>${c.nombre}</strong>: ${c.texto}</p>
-          `).join("")}
+    if (lista.length === 0) {
+      contenedor.innerHTML = `
+        <div class="empty-state">
+          <h2>🧠 Sin artículos</h2>
         </div>
-      </div>
-    `;
+      `;
+      return;
+    }
 
-    contenedor.appendChild(card);
-  });
-}
+    lista.forEach((a) => {
+
+      const card = document.createElement("div");
+      card.classList.add("card-articulo");
+
+      card.innerHTML = `
+        ${a.imagen ? `<img src="${a.imagen}" class="img-articulo">` : ""}
+
+        <h3>${a.titulo}</h3>
+        <p><strong>${a.autor}</strong></p>
+        <small>${tiempoRelativo(a.fecha)}</small>
+        <p>${a.contenido.substring(0, 100)}...</p>
+
+        <div class="acciones">
+          <button onclick="like(${a.id})">❤️ ${a.likes}</button>
+          <button onclick="toggleComentarios(${a.id})">💬 ${a.comentarios.length}</button>
+        </div>
+
+        <div class="comentarios" id="comentarios-${a.id}" style="display:none;">
+          
+          <input type="text" id="nombre-${a.id}" placeholder="Tu nombre">
+          <input type="text" id="input-${a.id}" placeholder="Escribe un comentario...">
+          <button onclick="comentar(${a.id})">Enviar</button>
+
+          <div class="lista-comentarios">
+            ${a.comentarios.map(c => `
+              <p>💬 <strong>${c.nombre}</strong>: ${c.texto}</p>
+            `).join("")}
+          </div>
+        </div>
+      `;
+
+      contenedor.appendChild(card);
+    });
+  }
 
   // =========================
   // ❤️ LIKE
   // =========================
-window.like = function(index) {
+  window.like = async (id) => {
 
-  articulos[index].likes++;
+    let { data, error } = await supabase
+      .from("articulos")
+      .select("likes")
+      .eq("id", id)
+      .single();
 
-  guardar();
-  render(articulos);
-  actualizarStats();
+    if (error) return console.error(error);
 
-  // 💥 animación
-  setTimeout(() => {
-    const btns = document.querySelectorAll(".like-btn");
-    if (btns[index]) {
-      btns[index].classList.add("liked");
+    await supabase
+      .from("articulos")
+      .update({ likes: (data.likes || 0) + 1 })
+      .eq("id", id);
 
-      setTimeout(() => {
-        btns[index].classList.remove("liked");
-      }, 200);
-    }
-  }, 50);
-}
+    cargarArticulos();
+  };
 
   // =========================
   // 💬 MOSTRAR COMENTARIOS
   // =========================
-  window.toggleComentarios = function(index) {
-    const div = document.getElementById(`comentarios-${index}`);
+  window.toggleComentarios = function(id) {
+    const div = document.getElementById(`comentarios-${id}`);
     div.style.display = div.style.display === "none" ? "block" : "none";
-  }
+  };
 
   // =========================
   // ✍️ COMENTAR
   // =========================
-window.comentar = function(index) {
+  window.comentar = async function(id) {
 
-  const nombre = document.getElementById(`nombre-${index}`).value.trim();
-  const texto = document.getElementById(`input-${index}`).value.trim();
+    const nombre = document.getElementById(`nombre-${id}`).value.trim();
+    const texto = document.getElementById(`input-${id}`).value.trim();
 
-  if (!nombre || !texto) return;
+    if (!nombre || !texto) return;
 
-  articulos[index].comentarios.push({
-    nombre,
-    texto,
-    fecha: new Date().toISOString()
-  });
+    let { data } = await supabase
+      .from("articulos")
+      .select("comentarios")
+      .eq("id", id)
+      .single();
 
-  guardar();
-  render(articulos);
-  actualizarStats();
-}
+    const nuevosComentarios = [
+      ...(data.comentarios || []),
+      { nombre, texto, fecha: new Date().toISOString() }
+    ];
+
+    await supabase
+      .from("articulos")
+      .update({ comentarios: nuevosComentarios })
+      .eq("id", id);
+
+    cargarArticulos();
+  };
 
   // =========================
   // 🔍 BUSCADOR
   // =========================
+  if (buscador) {
   buscador.addEventListener("input", () => {
 
     const texto = buscador.value.toLowerCase();
@@ -138,7 +156,8 @@ window.comentar = function(index) {
     );
 
     render(filtrados);
-  });
+   });
+}
 
   // =========================
   // 📊 STATS
@@ -159,25 +178,27 @@ window.comentar = function(index) {
   }
 
   // =========================
-  // 💾 GUARDAR
+  // ⏱️ TIEMPO RELATIVO
   // =========================
-  function guardar() {
-    localStorage.setItem("articulos", JSON.stringify(articulos));
+  function tiempoRelativo(fecha) {
+
+    const ahora = new Date();
+    const publicado = new Date(fecha);
+    const diff = Math.floor((ahora - publicado) / 1000);
+
+    const minutos = Math.floor(diff / 60);
+    const horas = Math.floor(diff / 3600);
+    const dias = Math.floor(diff / 86400);
+
+    if (diff < 60) return "Hace unos segundos";
+    if (minutos < 60) return `Hace ${minutos} min`;
+    if (horas < 24) return `Hace ${horas} h`;
+    return `Hace ${dias} días`;
   }
 
- function tiempoRelativo(fecha) {
+  // =========================
+  // 🚀 INIT
+  // =========================
+  cargarArticulos();
 
-  const ahora = new Date();
-  const publicado = new Date(fecha);
-  const diff = Math.floor((ahora - publicado) / 1000);
-
-  const minutos = Math.floor(diff / 60);
-  const horas = Math.floor(diff / 3600);
-  const dias = Math.floor(diff / 86400);
-
-  if (diff < 60) return "Hace unos segundos";
-  if (minutos < 60) return `Hace ${minutos} min`;
-  if (horas < 24) return `Hace ${horas} h`;
-  return `Hace ${dias} días`;
-}
 });

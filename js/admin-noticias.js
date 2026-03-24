@@ -1,114 +1,57 @@
+import { supabase, supabaseUrl } from "./supabase.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("form-noticia");
   const lista = document.getElementById("lista-noticias");
-  const previewBox = document.getElementById("preview");
 
-  let noticias = JSON.parse(localStorage.getItem("noticias")) || [];
-
-  let editIndex = null;
-
-  render();
+  if (!form || !lista) {
+    console.error("Faltan elementos en el HTML");
+    return;
+  }
 
   // =========================
-  // 🚀 GUARDAR / EDITAR
+  // 📥 CARGAR NOTICIAS
   // =========================
-  form.addEventListener("submit", e => {
-    e.preventDefault();
+  async function cargarNoticias() {
+    const { data, error } = await supabase
+      .from("noticias")
+      .select("*")
+      .order("fecha", { ascending: false });
 
-    const file = document.getElementById("imagen").files[0];
-
-    const guardar = (imagenBase64 = "") => {
-
-      const nueva = {
-        titulo: document.getElementById("titulo").value,
-        descripcion: document.getElementById("descripcion").value,
-        fecha: document.getElementById("fecha").value,
-        imagen: imagenBase64,
-        destacado: document.getElementById("destacado").checked,
-        vistas: 0
-      };
-
-      if (editIndex !== null) {
-        noticias[editIndex] = nueva;
-        editIndex = null;
-      } else {
-        noticias.push(nueva);
-      }
-
-      localStorage.setItem("noticias", JSON.stringify(noticias));
-      form.reset();
-      previewBox.style.display = "none";
-
-      render();
-    };
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => guardar(e.target.result);
-      reader.readAsDataURL(file);
-    } else {
-      guardar();
+    if (error) {
+      console.error(error);
+      return;
     }
-  });
 
-  // =========================
-  // 👁️ PREVIEW
-  // =========================
-  document.getElementById("preview-btn").addEventListener("click", () => {
-
-    const titulo = document.getElementById("titulo").value;
-    const descripcion = document.getElementById("descripcion").value;
-    const fecha = document.getElementById("fecha").value;
-    const file = document.getElementById("imagen").files[0];
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => mostrarPreview(titulo, descripcion, fecha, e.target.result);
-      reader.readAsDataURL(file);
-    } else {
-      mostrarPreview(titulo, descripcion, fecha, "");
-    }
-  });
-
-  function mostrarPreview(titulo, descripcion, fecha, img) {
-    previewBox.style.display = "block";
-
-    previewBox.innerHTML = `
-      ${img ? `<img src="${img}">` : ""}
-      <h3>${titulo}</h3>
-      <p>${descripcion}</p>
-      <small>📅 ${fecha}</small>
-    `;
+    render(data);
   }
 
   // =========================
   // 🎨 RENDER
   // =========================
-  function render() {
+  function render(noticias) {
     lista.innerHTML = "";
 
-    [...noticias].reverse().forEach((n, i) => {
+    if (noticias.length === 0) {
+      lista.innerHTML = "<p>Sin noticias aún</p>";
+      return;
+    }
 
-      const realIndex = noticias.length - 1 - i;
+    noticias.forEach(n => {
 
       const div = document.createElement("div");
-      div.className = "aviso-admin";
-
-      if (n.destacado) div.classList.add("destacado");
+      div.classList.add("card-admin");
 
       div.innerHTML = `
         ${n.imagen ? `<img src="${n.imagen}" class="img-admin">` : ""}
 
         <h3>${n.titulo}</h3>
         <p>${n.descripcion}</p>
-
-        <small>📅 ${n.fecha} | 👁️ ${n.vistas} vistas</small>
+        <small>📅 ${n.fecha}</small>
 
         <div class="acciones">
-          <button onclick="editar(${realIndex})">✏️</button>
-          <button onclick="eliminar(${realIndex})">❌</button>
-          <button onclick="ver(${realIndex})">👁️ Ver</button>
+          <button onclick="eliminarNoticia('${n.id}')">❌ Eliminar</button>
         </div>
       `;
 
@@ -117,37 +60,82 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // ✏️ EDITAR
-  // =========================
-  window.editar = (i) => {
-    const n = noticias[i];
-
-    document.getElementById("titulo").value = n.titulo;
-    document.getElementById("descripcion").value = n.descripcion;
-    document.getElementById("fecha").value = n.fecha;
-    document.getElementById("destacado").checked = n.destacado;
-
-    editIndex = i;
-  };
-
-  // =========================
   // ❌ ELIMINAR
   // =========================
-  window.eliminar = (i) => {
-    if (confirm("¿Eliminar noticia?")) {
-      noticias.splice(i, 1);
-      localStorage.setItem("noticias", JSON.stringify(noticias));
-      render();
+  window.eliminarNoticia = async (id) => {
+
+    if (!confirm("¿Eliminar esta noticia?")) return;
+
+    const { error } = await supabase
+      .from("noticias")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error(error);
+      return;
     }
+
+    cargarNoticias();
   };
 
   // =========================
-  // 👁️ CONTAR VISTAS
+  // 🖼️ SUBIR IMAGEN
   // =========================
-  window.ver = (i) => {
-    noticias[i].vistas++;
-    localStorage.setItem("noticias", JSON.stringify(noticias));
-    render();
-  };
+  async function subirImagen(file) {
+    const fileName = `noticias/${Date.now()}_${file.name}`;
+
+    const { data, error } = await supabase.storage
+      .from("imagenes")
+      .upload(fileName, file);
+
+    if (error) {
+      console.error(error);
+      return "";
+    }
+
+    return `${supabaseUrl}/storage/v1/object/public/imagenes/${data.path}`;
+  }
+
+  // =========================
+  // 📤 CREAR NOTICIA
+  // =========================
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const titulo = document.getElementById("titulo").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const fecha = document.getElementById("fecha").value;
+    const destacada = document.getElementById("destacada").checked;
+    const file = document.getElementById("imagen").files[0];
+
+    let imageUrl = "";
+
+    if (file) {
+      imageUrl = await subirImagen(file);
+    }
+
+    const { error } = await supabase.from("noticias").insert([{
+      titulo,
+      descripcion,
+      fecha,
+      imagen: imageUrl,
+      destacada
+    }]);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    alert("🚀 Noticia publicada");
+    form.reset();
+    cargarNoticias();
+  });
+
+  // =========================
+  // 🚀 INIT
+  // =========================
+  cargarNoticias();
 
 });
