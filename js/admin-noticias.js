@@ -1,10 +1,10 @@
-import { supabase, supabaseUrl } from "./supabase.js";
+
+import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
+  console.log("Botón funcionando 🚀");
   const form = document.getElementById("form-noticia");
   const lista = document.getElementById("lista-noticias");
-
   if (!form || !lista) {
     console.error("Faltan elementos en el HTML");
     return;
@@ -127,10 +127,11 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(error);
       return;
     }
-
+    
     alert("🚀 Noticia publicada");
     form.reset();
     cargarNoticias();
+
   });
 
   // =========================
