@@ -1,15 +1,20 @@
 import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Panel admin listo 🚀");
-
   const form = document.getElementById("form-noticia");
   const lista = document.getElementById("lista-noticias");
+  const preview = document.getElementById("preview");
+  const clave = "morras123"; // cámbiala
+  const params = new URLSearchParams(window.location.search);
+  const acceso = params.get("admin");
 
-  if (!form || !lista) {
-    console.error("Faltan elementos en el HTML");
-    return;
-  }
+  if (acceso !== clave) {
+  document.body.innerHTML = "<h1>🚫 Acceso denegado</h1>";
+  throw new Error("No autorizado");
+}
+
+  let editandoId = null;
+  let imagenActual = "";
 
   // =========================
   // 📥 CARGAR NOTICIAS
@@ -20,11 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
       .select("*")
       .order("fecha", { ascending: false });
 
-    if (error) {
-      console.error("Error cargando noticias:", error);
-      return;
-    }
+    if (error) return console.error(error);
+    document.getElementById("total").textContent = data.length;
 
+const urgentes = data.filter(n => n.destacada).length;
+document.getElementById("urgentes").textContent = urgentes;
+
+document.getElementById("categorias").textContent = "—";
     render(data);
   }
 
@@ -34,11 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function render(noticias) {
     lista.innerHTML = "";
 
-    if (!noticias || noticias.length === 0) {
-      lista.innerHTML = "<p>Sin noticias aún</p>";
-      return;
-    }
-
     noticias.forEach(n => {
       const div = document.createElement("div");
       div.classList.add("card-admin");
@@ -47,36 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ${n.imagen ? `<img src="${n.imagen}" class="img-admin">` : ""}
         <h3>${n.titulo}</h3>
         <p>${n.descripcion}</p>
-        <small>📅 ${n.fecha || ""}</small>
+        <small>${n.fecha || ""}</small>
 
         <div class="acciones">
-          <button onclick="eliminarNoticia('${n.id}')">❌ Eliminar</button>
+          <button onclick="editarNoticia('${n.id}')">✏️</button>
+          <button onclick="eliminarNoticia('${n.id}', '${n.imagen}')">🗑️</button>
         </div>
       `;
 
       lista.appendChild(div);
     });
   }
-
-  // =========================
-  // ❌ ELIMINAR NOTICIA
-  // =========================
-  window.eliminarNoticia = async (id) => {
-    if (!confirm("¿Eliminar esta noticia?")) return;
-
-    const { error } = await supabase
-      .from("noticias")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      console.error("Error eliminando:", error);
-      return;
-    }
-
-    alert("🗑️ Noticia eliminada");
-    cargarNoticias();
-  };
 
   // =========================
   // 🖼️ SUBIR IMAGEN
@@ -89,11 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .upload(fileName, file);
 
     if (error) {
-      console.error("Error subiendo imagen:", error);
+      console.error(error);
       return "";
     }
 
-    // Obtener URL pública correctamente
     const { data } = supabase.storage
       .from("imagenes")
       .getPublicUrl(fileName);
@@ -102,7 +84,75 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // 📤 CREAR NOTICIA
+  // ❌ ELIMINAR IMAGEN
+  // =========================
+  async function eliminarImagen(url) {
+    if (!url) return;
+
+    const path = url.split("/imagenes/")[1];
+
+    await supabase.storage
+      .from("imagenes")
+      .remove([path]);
+  }
+
+  // =========================
+  // ❌ ELIMINAR NOTICIA
+  // =========================
+  window.eliminarNoticia = async (id, imagen) => {
+    if (!confirm("¿Eliminar noticia?")) return;
+
+    await eliminarImagen(imagen);
+
+    const { error } = await supabase
+      .from("noticias")
+      .delete()
+      .eq("id", id);
+
+    if (error) return console.error(error);
+
+    cargarNoticias();
+  };
+
+  // =========================
+  // ✏️ EDITAR NOTICIA
+  // =========================
+  window.editarNoticia = async (id) => {
+    const { data, error } = await supabase
+      .from("noticias")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) return console.error(error);
+
+    document.getElementById("titulo").value = data.titulo;
+    document.getElementById("descripcion").value = data.descripcion;
+    document.getElementById("fecha").value = data.fecha;
+    document.getElementById("destacada").checked = data.destacada;
+
+    editandoId = id;
+    imagenActual = data.imagen;
+
+    preview.innerHTML = data.imagen
+      ? `<img src="${data.imagen}" class="img-admin">`
+      : "";
+  };
+
+  // =========================
+  // 👁️ PREVIEW
+  // =========================
+  document.getElementById("preview-btn").addEventListener("click", () => {
+    const file = document.getElementById("imagen").files[0];
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      preview.innerHTML = `<img src="${url}" class="img-admin">`;
+    }
+  });
+
+  // =========================
+  // 📤 GUARDAR
   // =========================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -113,29 +163,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const destacada = document.getElementById("destacada").checked;
     const file = document.getElementById("imagen").files[0];
 
-    let imageUrl = "";
+    let imageUrl = imagenActual;
 
     if (file) {
+      if (imagenActual) await eliminarImagen(imagenActual);
       imageUrl = await subirImagen(file);
     }
 
-    const { error } = await supabase
-      .from("noticias")
-      .insert([{
-        titulo,
-        descripcion,
-        fecha,
-        imagen: imageUrl,
-        destacada
-      }]);
+    if (editandoId) {
+      await supabase
+        .from("noticias")
+        .update({
+          titulo,
+          descripcion,
+          fecha,
+          imagen: imageUrl,
+          destacada
+        })
+        .eq("id", editandoId);
 
-    if (error) {
-      console.error("Error insertando:", error);
-      return;
+      editandoId = null;
+      imagenActual = "";
+      alert("✏️ Noticia actualizada");
+    } else {
+      await supabase
+        .from("noticias")
+        .insert([{
+          titulo,
+          descripcion,
+          fecha,
+          imagen: imageUrl,
+          destacada
+        }]);
+
+      alert("🚀 Noticia creada");
     }
 
-    alert("🚀 Noticia publicada");
     form.reset();
+    preview.innerHTML = "";
     cargarNoticias();
   });
 

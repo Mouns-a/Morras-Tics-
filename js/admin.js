@@ -1,170 +1,124 @@
-import { supabase, supabaseUrl } from "./supabase.js";
+import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  const form = document.getElementById("form-aviso");
+  const clave = "morras123"; // cámbiala
+  const form = document.getElementById("form-avisos");
   const lista = document.getElementById("lista-avisos");
+  const params = new URLSearchParams(window.location.search);
+  const acceso = params.get("admin");
+
+ if (acceso !== clave) {
+  document.body.innerHTML = "<h1>🚫 Acceso denegado</h1>";
+  throw new Error("No autorizado");
+}
+  let editandoId = null;
 
   // =========================
-  // 🔐 LOGIN SIMPLE
-  // =========================
-  const password = prompt("Acceso restringido");
-
-  if (password !== "morras123") {
-    document.body.innerHTML = "<h1>⛔ Acceso denegado</h1>";
-    return;
-  }
-
-  // =========================
-  // 📥 OBTENER AVISOS
+  // 📥 CARGAR AVISOS
   // =========================
   async function cargarAvisos() {
     const { data, error } = await supabase
-      .from("noticias")
+      .from("avisos")
       .select("*")
       .order("fecha", { ascending: false });
 
-    if (error) {
-      console.error("Error al cargar:", error);
-      return;
-    }
+    if (error) return console.error(error);
+    document.getElementById("total").textContent = data.length;
+
+const urgentes = data.filter(n => n.urgente).length;
+document.getElementById("urgentes").textContent = urgentes;
+
+const categorias = [...new Set(data.map(n => n.categoria))].length;
+document.getElementById("categorias").textContent = categorias;
 
     render(data);
-    actualizarStats(data);
   }
 
   // =========================
-  // 📊 STATS
+  // 🎨 RENDER
   // =========================
-  function actualizarStats(avisos) {
-    document.getElementById("total").innerText = avisos.length;
+  function render(data) {
+    lista.innerHTML = "";
 
-    const urgentes = avisos.filter(a => a.urgente).length;
-    document.getElementById("urgentes").innerText = urgentes;
+    data.forEach(n => {
+      const div = document.createElement("div");
+      div.classList.add("card-admin");
 
-    const categorias = new Set(avisos.map(a => a.categoria)).size;
-    document.getElementById("categorias").innerText = categorias;
+      div.innerHTML = `
+        <h3>${n.titulo}</h3>
+        <p>${n.descripcion}</p>
+        <small>${n.categoria || ""} | ${n.fecha || ""}</small>
+
+        <div class="acciones">
+          <button onclick="editar('${n.id}')">✏️</button>
+          <button onclick="eliminar('${n.id}')">🗑️</button>
+        </div>
+      `;
+
+      lista.appendChild(div);
+    });
   }
 
   // =========================
-  // 🖼️ SUBIR IMAGEN
+  // ❌ ELIMINAR
   // =========================
-  async function subirImagen(file) {
-    const fileName = `noticias/${Date.now()}_${file.name}`;
+  window.eliminar = async (id) => {
+    if (!confirm("¿Eliminar aviso?")) return;
 
-    const { data, error } = await supabase.storage
-      .from("imagenes")
-      .upload(fileName, file);
+    await supabase.from("avisos").delete().eq("id", id);
 
-    if (error) {
-      console.error("Error subiendo imagen:", error);
-      return "";
-    }
-
-    return `${supabaseUrl}/storage/v1/object/public/imagenes/${data.path}`;
-  }
+    cargarAvisos();
+  };
 
   // =========================
-  // 📤 GUARDAR AVISO
+  // ✏️ EDITAR
+  // =========================
+  window.editar = async (id) => {
+    const { data } = await supabase
+      .from("avisos")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    document.getElementById("titulo").value = data.titulo;
+    document.getElementById("descripcion").value = data.descripcion;
+    document.getElementById("fecha").value = data.fecha;
+
+    editandoId = id;
+  };
+
+  // =========================
+  // 📤 GUARDAR
   // =========================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const titulo = document.getElementById("titulo").value;
     const descripcion = document.getElementById("descripcion").value;
-    const categoria = document.getElementById("categoria").value;
     const fecha = document.getElementById("fecha").value;
-    const urgente = document.getElementById("urgente").checked;
-    const destacado = document.getElementById("destacado").checked;
 
-    const file = document.getElementById("imagen").files[0];
+    if (editandoId) {
+      await supabase.from("avisos").update({
+        titulo,
+        descripcion,
+        fecha
+      }).eq("id", editandoId);
 
-    let imageUrl = "";
-    if (file) {
-      imageUrl = await subirImagen(file);
-    }
+      editandoId = null;
+      alert("✏️ Aviso actualizado");
+    } else {
+      await supabase.from("avisos").insert([{
+        titulo,
+        descripcion,
+        fecha
+      }]);
 
-    const { error } = await supabase.from("noticias").insert([{
-      titulo,
-      descripcion,
-      categoria,
-      fecha,
-      urgente,
-      destacado,
-      imagen: imageUrl
-    }]);
-
-    if (error) {
-      console.error("Error al guardar:", error);
-      return;
+      alert("🚀 Aviso creado");
     }
 
     form.reset();
     cargarAvisos();
   });
 
-  // =========================
-  // 🖥️ RENDER
-  // =========================
-  function render(avisos) {
-    lista.innerHTML = "";
-
-    avisos.forEach((aviso) => {
-      const div = document.createElement("div");
-      div.classList.add("aviso-card");
-
-      div.innerHTML = `
-        <div class="aviso-header">
-          <h3>${aviso.titulo}</h3>
-          ${aviso.urgente ? '<span class="badge urgente">URGENTE</span>' : ''}
-        </div>
-
-        <p class="descripcion">${aviso.descripcion}</p>
-
-        ${aviso.imagen ? `<img src="${aviso.imagen}" class="imagen-aviso">` : ""}
-
-        <div class="aviso-footer">
-          <span class="categoria">${aviso.categoria}</span>
-          <span class="fecha">${aviso.fecha}</span>
-        </div>
-
-        <button onclick="eliminar('${aviso.id}')">❌ Eliminar</button>
-      `;
-
-      lista.appendChild(div);
-    });
-
-    // ✨ Animación
-    setTimeout(() => {
-      const cards = document.querySelectorAll(".aviso-card");
-      cards.forEach((card, i) => {
-        setTimeout(() => {
-          card.classList.add("visible");
-        }, i * 100);
-      });
-    }, 50);
-  }
-
-  // =========================
-  // ❌ ELIMINAR
-  // =========================
-  window.eliminar = async function(id) {
-    const { error } = await supabase
-      .from("noticias")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      console.error("Error al eliminar:", error);
-      return;
-    }
-
-    cargarAvisos();
-  };
-
-  // =========================
-  // 🚀 INIT
-  // =========================
   cargarAvisos();
-
 });

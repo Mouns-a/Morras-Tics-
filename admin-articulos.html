@@ -1,13 +1,45 @@
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/adminnot.css">
-    <link rel="stylesheet" href="css/global.css">
-   
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Artículos | Morras TICs</title>
 
- 
- <section class="section" style="padding-top:120px; max-width:800px; margin:auto;">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/adminnot.css">
+  <link rel="stylesheet" href="css/global.css">
+</head>
 
-  <h1 class="titulo">Panel Artículos 🧠</h1>
+<body>
 
+<section class="section" style="padding-top:120px; max-width:800px; margin:auto;">
+
+  <h1 class="titulo">Panel Admin Artículos 🧠</h1>
+  <div class="navbar">
+  <a href="admin-noticias.html?admin=morras123">📰 Noticias</a>
+  <a href="admin-articulos.html?admin=morras123">📚 Artículos</a>
+  <a href="admin-avisos.html?admin=morras123">📢 Avisos</a>
+</div>
+
+  <!-- ✅ STATS -->
+  <div class="stats-panel">
+    <div class="stat">
+      <h3 id="total">0</h3>
+      <p>Total</p>
+    </div>
+
+    <div class="stat">
+      <h3 id="urgentes">0</h3>
+      <p>Extra</p>
+    </div>
+
+    <div class="stat">
+      <h3 id="categorias">0</h3>
+      <p>Categorías</p>
+    </div>
+  </div>
+
+  <!-- 📝 FORM -->
   <form id="form-articulo" class="form">
 
     <input type="text" id="titulo" placeholder="Título" required>
@@ -30,10 +62,14 @@
     <button type="submit">Publicar 🚀</button>
     <button type="button" id="preview-btn">👁️ Vista previa</button>
   </form>
- <div id="preview" class="preview-box"></div>
+
+  <div id="preview" class="preview-box"></div>
 
   <h2 style="margin-top:40px;">Artículos publicados 📋</h2>
   <div id="lista-articulos"></div>
 </section>
 
 <script src="js/admin-articulos.js"></script>
+
+</body>
+</html>

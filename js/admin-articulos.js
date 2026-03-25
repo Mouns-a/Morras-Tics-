@@ -1,103 +1,61 @@
+import { supabase } from "./supabase.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  const form = document.getElementById("form-articulo");
+  const form = document.getElementById("form-aeticulos");
   const lista = document.getElementById("lista-articulos");
-  const previewBox = document.getElementById("preview");
+  const preview = document.getElementById("preview");
+  const clave = "morras123"; // cámbiala
+  const params = new URLSearchParams(window.location.search);
+  const acceso = params.get("admin");
 
-  let articulos = JSON.parse(localStorage.getItem("articulos")) || [];
+  if (acceso !== clave) {
+  document.body.innerHTML = "<h1>🚫 Acceso denegado</h1>";
+  throw new Error("No autorizado");
+}
 
-  let editIndex = null;
-
-  render();
-
-  // =========================
-  // GUARDAR / EDITAR
-  // =========================
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    const file = document.getElementById("imagen").files[0];
-
-    const guardar = (img = "") => {
-
-      const nuevo = {
-        titulo: document.getElementById("titulo").value,
-        autor: document.getElementById("autor").value,
-        contenido: document.getElementById("contenido").value,
-        fecha: new Date().toISOString().split("T")[0],
-        imagen: img,
-        destacado: document.getElementById("destacado").checked,
-        likes: 0,
-        comentarios: [],
-        vistas: 0
-      };
-
-      if (editIndex !== null) {
-        articulos[editIndex] = nuevo;
-        editIndex = null;
-      } else {
-        articulos.push(nuevo);
-      }
-
-      localStorage.setItem("articulos", JSON.stringify(articulos));
-
-      form.reset();
-      previewBox.style.display = "none";
-      render();
-    };
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => guardar(e.target.result);
-      reader.readAsDataURL(file);
-    } else {
-      guardar();
-    }
-  });
+  let editandoId = null;
+  let imagenActual = "";
 
   // =========================
-  // PREVIEW
+  // 📥 CARGAR ARTÍCULOS
   // =========================
-  document.getElementById("preview-btn").addEventListener("click", () => {
+  async function cargarArticulos() {
+    const { data, error } = await supabase
+      .from("articulos")
+      .select("*")
+      .order("fecha", { ascending: false });
 
-    const titulo = document.getElementById("titulo").value;
-    const contenido = document.getElementById("contenido").value;
+    if (error) return console.error(error);
+    document.getElementById("total").textContent = data.length;
 
-    previewBox.style.display = "block";
-    previewBox.innerHTML = `
-      <h3>${titulo}</h3>
-      <p>${contenido}</p>
-    `;
-  });
+const totalLikes = data.reduce((acc, n) => acc + (n.likes || 0), 0);
+document.getElementById("urgentes").textContent = totalLikes;
+
+document.getElementById("categorias").textContent = "Artículos";
+
+    render(data);
+  }
 
   // =========================
-  // RENDER
+  // 🎨 RENDER
   // =========================
-  function render() {
+  function render(data) {
     lista.innerHTML = "";
 
-    [...articulos].reverse().forEach((a, i) => {
-
-      const realIndex = articulos.length - 1 - i;
-
+    data.forEach(n => {
       const div = document.createElement("div");
-      div.className = "card-articulo";
-
-      if (a.destacado) div.classList.add("destacado");
+      div.classList.add("card-admin");
 
       div.innerHTML = `
-        ${a.imagen ? `<img src="${a.imagen}" class="img-admin">` : ""}
-
-        <h3>${a.titulo}</h3>
-        <small>✍️ ${a.autor} | 📅 ${a.fecha}</small>
-
-        <p>${a.contenido.substring(0, 100)}...</p>
-
-        <p class="like-btn">❤️ ${a.likes}</p>
+        ${n.imagen ? `<img src="${n.imagen}" class="img-admin">` : ""}
+        <h3>${n.titulo}</h3>
+        <p>${n.contenido}</p>
+        <small>${n.fecha || ""}</small>
 
         <div class="acciones">
-          <button onclick="editar(${realIndex})">✏️</button>
-          <button onclick="eliminar(${realIndex})">❌</button>
+          <button onclick="editar('${n.id}')">✏️</button>
+          <button onclick="eliminar('${n.id}', '${n.imagen || ""}')">🗑️</button>
         </div>
       `;
 
@@ -106,28 +64,129 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // EDITAR
+  // 🖼️ SUBIR IMAGEN
   // =========================
-  window.editar = (i) => {
-    const a = articulos[i];
+  async function subirImagen(file) {
+    const fileName = `articulos/${Date.now()}_${file.name}`;
 
-    document.getElementById("titulo").value = a.titulo;
-    document.getElementById("autor").value = a.autor;
-    document.getElementById("contenido").value = a.contenido;
-    document.getElementById("destacado").checked = a.destacado;
+    const { error } = await supabase.storage
+      .from("imagenes")
+      .upload(fileName, file);
 
-    editIndex = i;
-  };
-
-  // =========================
-  // ELIMINAR
-  // =========================
-  window.eliminar = (i) => {
-    if (confirm("¿Eliminar artículo?")) {
-      articulos.splice(i, 1);
-      localStorage.setItem("articulos", JSON.stringify(articulos));
-      render();
+    if (error) {
+      console.error(error);
+      return "";
     }
+
+    const { data } = supabase.storage
+      .from("imagenes")
+      .getPublicUrl(fileName);
+
+    return data.publicUrl;
+  }
+
+  // =========================
+  // ❌ ELIMINAR IMAGEN
+  // =========================
+  async function eliminarImagen(url) {
+    if (!url) return;
+
+    const path = url.split("/imagenes/")[1];
+
+    await supabase.storage.from("imagenes").remove([path]);
+  }
+
+  // =========================
+  // ❌ ELIMINAR
+  // =========================
+  window.eliminar = async (id, imagen) => {
+    if (!confirm("¿Eliminar artículo?")) return;
+
+    await eliminarImagen(imagen);
+
+    await supabase.from("articulos").delete().eq("id", id);
+
+    cargarArticulos();
   };
 
+  // =========================
+  // ✏️ EDITAR
+  // =========================
+  window.editar = async (id) => {
+    const { data } = await supabase
+      .from("articulos")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    document.getElementById("titulo").value = data.titulo;
+    document.getElementById("descripcion").value = data.contenido;
+    document.getElementById("fecha").value = data.fecha;
+
+    editandoId = id;
+    imagenActual = data.imagen;
+
+    preview.innerHTML = data.imagen
+      ? `<img src="${data.imagen}" class="img-admin">`
+      : "";
+  };
+
+  // =========================
+  // 👁️ PREVIEW
+  // =========================
+  document.getElementById("preview-btn").addEventListener("click", () => {
+    const file = document.getElementById("imagen").files[0];
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      preview.innerHTML = `<img src="${url}" class="img-admin">`;
+    }
+  });
+
+  // =========================
+  // 📤 GUARDAR
+  // =========================
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const titulo = document.getElementById("titulo").value;
+    const contenido = document.getElementById("descripcion").value;
+    const fecha = document.getElementById("fecha").value;
+    const file = document.getElementById("imagen").files[0];
+
+    let imageUrl = imagenActual;
+
+    if (file) {
+      if (imagenActual) await eliminarImagen(imagenActual);
+      imageUrl = await subirImagen(file);
+    }
+
+    if (editandoId) {
+      await supabase.from("articulos").update({
+        titulo,
+        contenido,
+        fecha,
+        imagen: imageUrl
+      }).eq("id", editandoId);
+
+      editandoId = null;
+      imagenActual = "";
+      alert("✏️ Artículo actualizado");
+    } else {
+      await supabase.from("articulos").insert([{
+        titulo,
+        contenido,
+        fecha,
+        imagen: imageUrl
+      }]);
+
+      alert("🚀 Artículo creado");
+    }
+
+    form.reset();
+    preview.innerHTML = "";
+    cargarArticulos();
+  });
+
+  cargarArticulos();
 });
