@@ -1,3 +1,4 @@
+console.log("Noticias JS cargado");
 import { supabase } from "./supabase.js";
 const contenedor = document.getElementById("contenedor-noticias");
 const destacada = document.getElementById("destacada");
