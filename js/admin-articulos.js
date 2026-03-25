@@ -1,18 +1,12 @@
 import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const form = document.getElementById("form-aeticulos");
   const lista = document.getElementById("lista-articulos");
   const preview = document.getElementById("preview");
   const clave = "morras123"; // cámbiala
   const params = new URLSearchParams(window.location.search);
   const acceso = params.get("admin");
-
-  if (acceso !== clave) {
-  document.body.innerHTML = "<h1>🚫 Acceso denegado</h1>";
-  throw new Error("No autorizado");
-}
 
   let editandoId = null;
   let imagenActual = "";
