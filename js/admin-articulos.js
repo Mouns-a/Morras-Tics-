@@ -1,12 +1,9 @@
 import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("form-aeticulos");
+  const form = document.getElementById("form-articulos");
   const lista = document.getElementById("lista-articulos");
   const preview = document.getElementById("preview");
-  const clave = "morras123"; // cámbiala
-  const params = new URLSearchParams(window.location.search);
-  const acceso = params.get("admin");
 
   let editandoId = null;
   let imagenActual = "";
@@ -20,13 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
       .select("*")
       .order("fecha", { ascending: false });
 
-    if (error) return console.error(error);
+    if (error) {
+      console.error(error);
+      return;
+    }
+
     document.getElementById("total").textContent = data.length;
 
-const totalLikes = data.reduce((acc, n) => acc + (n.likes || 0), 0);
-document.getElementById("urgentes").textContent = totalLikes;
+    const totalLikes = data.reduce((acc, n) => acc + (n.likes || 0), 0);
+    document.getElementById("urgentes").textContent = totalLikes;
 
-document.getElementById("categorias").textContent = "Artículos";
+    document.getElementById("categorias").textContent = "Artículos";
 
     render(data);
   }
@@ -97,7 +98,6 @@ document.getElementById("categorias").textContent = "Artículos";
     if (!confirm("¿Eliminar artículo?")) return;
 
     await eliminarImagen(imagen);
-
     await supabase.from("articulos").delete().eq("id", id);
 
     cargarArticulos();
@@ -183,4 +183,5 @@ document.getElementById("categorias").textContent = "Artículos";
   });
 
   cargarArticulos();
+
 });
