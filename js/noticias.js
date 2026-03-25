@@ -5,7 +5,6 @@ const destacada = document.getElementById("destacada");
 // 🛡️ protección
 if (!contenedor || !destacada) {
   console.error("Faltan elementos en noticias.html");
-  return;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
