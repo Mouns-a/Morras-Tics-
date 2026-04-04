@@ -1,7 +1,6 @@
 import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 🔐 PROTECCIÓN DE ACCESO
     const claveCorrecta = "morras123";
     const params = new URLSearchParams(window.location.search);
     if (params.get("admin") !== claveCorrecta) {
@@ -20,13 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let editandoId = null;
     let imagenActual = "";
 
-    // 📥 CARGAR ARTÍCULOS
     async function cargarArticulos() {
         const { data, error } = await supabase.from("articulos").select("*").order("fecha", { ascending: false });
         if (error) return console.error(error);
         
-        document.getElementById("total").textContent = data.length;
-        document.getElementById("urgentes").textContent = data.reduce((acc, n) => acc + (n.likes || 0), 0);
+        if(document.getElementById("total")) document.getElementById("total").textContent = data.length;
+        if(document.getElementById("urgentes")) document.getElementById("urgentes").textContent = data.reduce((acc, n) => acc + (n.likes || 0), 0);
         
         render(data);
     }
@@ -37,9 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const div = document.createElement("div");
             div.classList.add("card-admin");
             div.innerHTML = `
-                ${n.imagen ? `<img src="${n.imagen}" class="img-admin">` : ""}
+                ${n.imagen ? `<img src="${n.imagen}" class="img-admin" style="width:100px">` : ""}
                 <h3>${n.titulo}</h3>
-                <p>${n.contenido.substring(0, 100)}...</p>
+                <p>${n.contenido ? n.contenido.substring(0, 50) : ""}...</p>
                 <div class="acciones">
                     <button onclick="window.editarArticulo('${n.id}')">✏️</button>
                     <button onclick="window.eliminarArticulo('${n.id}', '${n.imagen || ""}')">🗑️</button>
@@ -48,32 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 👁️ VISTA PREVIA
-    previewBtn?.addEventListener("click", () => {
-        const file = document.getElementById("imagen").files[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            preview.innerHTML = `<img src="${url}" class="img-admin">`;
-        }
-        preview.style.display = "block";
-    });
-
-    // 🛠️ ACCIONES GLOBALES
-    window.eliminarArticulo = async (id, img) => {
-        if (!confirm("¿Eliminar artículo?")) return;
-        if (img) await supabase.storage.from("imagenes").remove([img.split("/imagenes/")[1]]);
-        await supabase.from("articulos").delete().eq("id", id);
-        cargarArticulos();
-    };
-
     window.editarArticulo = async (id) => {
         const { data } = await supabase.from("articulos").select("*").eq("id", id).single();
         document.getElementById("titulo").value = data.titulo;
+        // CORRECCIÓN: Usamos el ID del HTML 'descripcion'
         document.getElementById("descripcion").value = data.contenido;
-        document.getElementById("fecha").value = data.fecha;
+        if(document.getElementById("fecha")) document.getElementById("fecha").value = data.fecha;
         editandoId = id;
         imagenActual = data.imagen;
-        if(data.imagen) preview.innerHTML = `<img src="${data.imagen}" class="img-admin">`;
     };
 
     form.addEventListener("submit", async (e) => {
@@ -89,9 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const payload = {
             titulo: document.getElementById("titulo").value,
+            // CORRECCIÓN: Leemos de 'descripcion' y guardamos en 'contenido'
             contenido: document.getElementById("descripcion").value,
-            fecha: document.getElementById("fecha").value,
-            imagen: url
+            autor: document.getElementById("autor") ? document.getElementById("autor").value : "Admin",
+            imagen: url,
+            fecha: new Date().toISOString()
         };
 
         if (editandoId) {
@@ -100,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
             await supabase.from("articulos").insert([payload]);
         }
         form.reset();
-        preview.innerHTML = "";
         editandoId = null;
         cargarArticulos();
     });

@@ -1,7 +1,6 @@
 import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 🔐 PROTECCIÓN DE ACCESO
     const claveCorrecta = "morras123";
     const params = new URLSearchParams(window.location.search);
     if (params.get("admin") !== claveCorrecta) {
@@ -15,19 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("form-noticia");
     const lista = document.getElementById("lista-noticias");
     const preview = document.getElementById("preview");
-    const previewBtn = document.getElementById("preview-btn");
-
     let editandoId = null;
     let imagenActual = "";
 
-    // 📥 CARGAR NOTICIAS
     async function cargarNoticias() {
         const { data, error } = await supabase.from("noticias").select("*").order("fecha", { ascending: false });
-        if (error) return console.error(error);
-        
+        if (error) return;
         document.getElementById("total").textContent = data.length;
         document.getElementById("urgentes").textContent = data.filter(n => n.destacada).length;
-        
         render(data);
     }
 
@@ -37,34 +31,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const div = document.createElement("div");
             div.classList.add("card-admin");
             div.innerHTML = `
-                ${n.imagen ? `<img src="${n.imagen}" class="img-admin">` : ""}
+                ${n.imagen ? `<img src="${n.imagen}" class="img-admin" style="width:100px">` : ""}
                 <h3>${n.titulo}</h3>
-                <p>${n.descripcion || ""}</p>
                 <div class="acciones">
                     <button onclick="window.editarNoticia('${n.id}')">✏️</button>
-                    <button onclick="window.eliminarNoticia('${n.id}', '${n.imagen || ""}')">🗑️</button>
+                    <button onclick="window.eliminarNoticia('${n.id}')">🗑️</button>
                 </div>`;
             lista.appendChild(div);
         });
     }
 
-    // 👁️ VISTA PREVIA
-    previewBtn?.addEventListener("click", () => {
-        const file = document.getElementById("imagen").files[0];
-        const titulo = document.getElementById("titulo").value;
-        if (file) {
-            const url = URL.createObjectURL(file);
-            preview.innerHTML = `<img src="${url}" class="img-admin"><h4>${titulo}</h4>`;
-        } else if (imagenActual) {
-            preview.innerHTML = `<img src="${imagenActual}" class="img-admin"><h4>${titulo}</h4>`;
-        }
-        preview.style.display = "block";
-    });
-
-    // 🛠️ ACCIONES GLOBALES
-    window.eliminarNoticia = async (id, img) => {
+    window.eliminarNoticia = async (id) => {
         if (!confirm("¿Eliminar noticia?")) return;
-        if (img) await supabase.storage.from("imagenes").remove([img.split("/imagenes/")[1]]);
         await supabase.from("noticias").delete().eq("id", id);
         cargarNoticias();
     };
@@ -77,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("destacada").checked = data.destacada;
         editandoId = id;
         imagenActual = data.imagen;
-        if(data.imagen) preview.innerHTML = `<img src="${data.imagen}" class="img-admin">`;
     };
 
     form.addEventListener("submit", async (e) => {
@@ -87,8 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (file) {
             const path = `noticias/${Date.now()}_${file.name}`;
-            await supabase.storage.from("imagenes").upload(path, file);
-            url = supabase.storage.from("imagenes").getPublicUrl(path).data.publicUrl;
+            const { data, error } = await supabase.storage.from("imagenes").upload(path, file);
+            if (!error) {
+                url = supabase.storage.from("imagenes").getPublicUrl(path).data.publicUrl;
+            }
         }
 
         const payload = {
@@ -105,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
             await supabase.from("noticias").insert([payload]);
         }
         form.reset();
-        preview.innerHTML = "";
         editandoId = null;
         cargarNoticias();
     });
