@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Avisos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Avisos | Morras TICs</title>
 
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/styles.css">
@@ -12,68 +13,70 @@
 <body>
 
 <div class="cursor-luz"></div>
-<div id="login-box" class="login-box">
-  <h2>Acceso Admin 🔐</h2>
-  <input type="password" id="password" placeholder="Contraseña">
-  <button onclick="login()">Entrar</button>
-</div>
 
-<section class="section" style="padding-top:120px; max-width:800px; margin:auto;">
-<section id="admin-panel" style="display:none; padding-top:120px; max-width:800px; margin:auto;"></section>
+<section class="admin-container" style="padding-top:120px; max-width:1000px; margin:auto;">
+  
   <h1 class="titulo">Panel Admin Avisos⚡</h1>
-  <div class="navbar">
-  <a href="admin-noticias.html?admin=morras123">📰 Noticias</a>
-  <a href="admin-articulos.html?admin=morras123">📚 Artículos</a>
-  <a href="admin.html?admin=morras123">📢 Avisos</a>
-</div>
-  <!-- FORMULARIO -->
-  <form id="form-aviso" class="form">
-    <input type="text" id="titulo" placeholder="Título" required>
-    <input type="text" id="descripcion" placeholder="Descripción" required>
 
-    <select id="categoria">
-      <option value="evento">Evento</option>
-      <option value="taller">Taller</option>
-      <option value="convocatoria">Convocatoria</option>
-    </select>
-
-    <input type="date" id="fecha" required>
-    <input type="file" id="imagen" accept="image/*">
-
-<label>
-  <input type="checkbox" id="destacado"> Destacado ⭐
-</label>
-
-    <label>
-      <input type="checkbox" id="urgente"> Aviso urgente
-    </label>
-       <button type="submit">Agregar Aviso 🚀</button>
-
-  </form>
-
-<h2>📋 Avisos guardados</h2>
-
-<!-- 📊 PANEL DE ESTADÍSTICAS -->
-<div class="stats-panel">
-  <div class="stat">
-    <h3 id="total">0</h3>
-    <p>Total Avisos</p>
+  <div class="navbar" style="text-align: center; margin-bottom: 30px;">
+    <a href="admin-noticias.html?admin=morras123" class="btn-nav">📰 Noticias</a>
+    <a href="admin-articulos.html?admin=morras123" class="btn-nav">📚 Artículos</a>
+    <a href="admin-avisos.html?admin=morras123" class="btn-nav">📢 Avisos</a>
   </div>
 
-  <div class="stat">
-    <h3 id="urgentes">0</h3>
-    <p>Urgentes</p>
+  <div class="admin-grid">
+    <div class="admin-card">
+      <h2>Crear Nuevo Aviso 🚀</h2>
+      <form id="form-avisos" class="form">
+        <input type="text" id="titulo" placeholder="Título del Aviso" required>
+        <textarea id="descripcion" placeholder="Descripción detallada" rows="4" required></textarea>
+
+        <select id="categoria">
+          <option value="evento">Evento</option>
+          <option value="taller">Taller</option>
+          <option value="convocatoria">Convocatoria</option>
+        </select>
+
+        <input type="date" id="fecha" required>
+        
+        <div style="display: flex; gap: 20px; margin: 10px 0;">
+            <label><input type="checkbox" id="destacado"> Destacado ⭐</label>
+            <label><input type="checkbox" id="urgente"> Urgente 🚨</label>
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="btn-guardar">Publicar Aviso ⚡</button>
+            <button type="button" id="preview-btn" class="btn-editar">Vista Previa 👁️</button>
+        </div>
+      </form>
+
+      <div id="preview" class="preview-box" style="display:none; margin-top:20px;"></div>
+    </div>
+
+    <div class="admin-card">
+      <h2>Estadísticas 📊</h2>
+      <div class="stats-panel">
+        <div class="stat">
+          <h3 id="total">0</h3>
+          <p>Total</p>
+        </div>
+        <div class="stat">
+          <h3 id="urgentes">0</h3>
+          <p>Urgentes</p>
+        </div>
+        <div class="stat">
+          <h3 id="categorias">0</h3>
+          <p>Categorías</p>
+        </div>
+      </div>
+
+      <hr style="opacity: 0.1; margin: 20px 0;">
+
+      <h2>📋 Avisos Publicados</h2>
+      <div id="lista-avisos">
+        </div>
+    </div>
   </div>
-
-  <div class="stat">
-    <h3 id="categorias">0</h3>
-    <p>Categorías</p>
-  </div>
- </div>
-
- <!-- LISTA -->
- <div id="lista-avisos"></div>
-
 </section>
 
 <script src="js/global.js"></script>
