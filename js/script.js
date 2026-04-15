@@ -93,21 +93,16 @@ document.addEventListener("DOMContentLoaded", () => {
       cursor.style.background = "radial-gradient(circle, #ff00ff40, transparent 70%)";
     });
   });
-
-  // ACORDEÓN
-  const botones = document.querySelectorAll(".titulo-item");
-  botones.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = btn.parentElement;
-      const contenido = btn.nextElementSibling;
-
-      if (contenido.style.display === "block") {
-        contenido.style.display = "none";
-        item.classList.remove("active");
-      } else {
-        contenido.style.display = "block";
-        item.classList.add("active");
-      }
-    });
-  });
 });
+// DESPLEGAR INFORMACIÓN DE ROLES
+function toggleRol(card) {
+  // Cierra las demás tarjetas
+  document.querySelectorAll(".rol-card").forEach(c => {
+    if (c !== card) {
+      c.classList.remove("activo");
+    }
+  });
+
+  // Alterna la tarjeta seleccionada
+  card.classList.toggle("activo");
+}

@@ -116,32 +116,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =========================
   // ✍️ COMENTAR
   // =========================
-  window.comentar = async function(id) {
-
+// Dentro de articulos.js
+window.comentar = async function(id) {
     const nombre = document.getElementById(`nombre-${id}`).value.trim();
     const texto = document.getElementById(`input-${id}`).value.trim();
 
-    if (!nombre || !texto) return;
+    if (!nombre || !texto) return alert("Completa los campos");
 
-    let { data } = await supabase
-      .from("articulos")
-      .select("comentarios")
-      .eq("id", id)
-      .single();
+    // Obtenemos comentarios actuales para no sobreescribir
+    const { data: art } = await supabase.from("articulos").select("comentarios").eq("id", id).single();
+    
+    const nuevoComentario = { 
+        nombre, 
+        texto, 
+        fecha: new Date().toISOString() 
+    };
 
-    const nuevosComentarios = [
-      ...(data.comentarios || []),
-      { nombre, texto, fecha: new Date().toISOString() }
-    ];
+    const { error } = await supabase
+        .from("articulos")
+        .update({ comentarios: [...(art.comentarios || []), nuevoComentario] })
+        .eq("id", id);
 
-    await supabase
-      .from("articulos")
-      .update({ comentarios: nuevosComentarios })
-      .eq("id", id);
-
-    cargarArticulos();
-  };
-
+    if (!error) cargarArticulos(); // Recarga la lista
+};
   // =========================
   // 🔍 BUSCADOR
   // =========================
