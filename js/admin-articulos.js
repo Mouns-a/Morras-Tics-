@@ -16,6 +16,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const preview = document.getElementById("preview");
     const previewBtn = document.getElementById("preview-btn");
 
+    // =========================
+// 👁️ VISTA PREVIA
+// =========================
+previewBtn.addEventListener("click", () => {
+    const titulo = document.getElementById("titulo").value;
+    const autor = document.getElementById("autor").value;
+    const contenido = document.getElementById("descripcion").value;
+    const file = document.getElementById("imagen").files[0];
+
+    if (!titulo || !contenido) {
+        preview.innerHTML = "<p>⚠️ Completa el título y el contenido para la vista previa.</p>";
+        return;
+    }
+
+    let imagenURL = "";
+    if (file) {
+        imagenURL = URL.createObjectURL(file);
+    } else if (imagenActual) {
+        imagenURL = imagenActual;
+    }
+
+    preview.innerHTML = `
+        <div class="card-articulo">
+            ${imagenURL ? `<img src="${imagenURL}" class="img-articulo">` : ""}
+            <h3>${titulo}</h3>
+            <p><strong>${autor || "Admin"}</strong></p>
+            <small>Vista previa</small>
+            <p>${contenido.substring(0, 150)}...</p>
+        </div>
+    `;
+});
+
     let editandoId = null;
     let imagenActual = "";
 
@@ -87,4 +119,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     cargarArticulos();
+    // =========================
+// 🗑️ ELIMINAR ARTÍCULO
+// =========================
+window.eliminarArticulo = async (id, imagen) => {
+    const confirmar = confirm("¿Deseas eliminar este artículo?");
+    if (!confirmar) return;
+
+    try {
+        // Eliminar imagen del almacenamiento
+        if (imagen) {
+            const nombreArchivo = imagen.split("/").pop();
+            await supabase.storage
+                .from("imagenes")
+                .remove([`articulos/${nombreArchivo}`]);
+        }
+
+        // Eliminar registro de la base de datos
+        const { error } = await supabase
+            .from("articulos")
+            .delete()
+            .eq("id", id);
+
+        if (error) throw error;
+
+        alert("✅ Artículo eliminado correctamente");
+        cargarArticulos();
+
+    } catch (error) {
+        console.error("Error al eliminar:", error);
+        alert("❌ No se pudo eliminar el artículo");
+    }
+};
 });

@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Error:", error);
       return;
     }
+    console.log("Artículos cargados:", data);
+
+
 
     // Normalizar
     articulos = data.map(a => ({
@@ -28,6 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       likes: a.likes || 0,
       comentarios: a.comentarios || []
     }));
+
 
     render(articulos);
     actualizarStats();
@@ -59,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <h3>${a.titulo}</h3>
         <p><strong>${a.autor}</strong></p>
         <small>${tiempoRelativo(a.fecha)}</small>
-        <p>${a.contenido.substring(0, 100)}...</p>
+        <p>${(a.contenido||"").substring(0, 100)}...</p>
 
         <div class="acciones">
           <button onclick="like(${a.id})">❤️ ${a.likes}</button>

@@ -6,7 +6,7 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: #7505a1;
+  background: #f0b5d3;
   color: #fff;
   overflow-x: hidden; /* Evita scroll horizontal */
 }
@@ -21,7 +21,7 @@ header {
   align-items: center;
   padding: 15px 40px;
   z-index: 100;
-  background: rgba(185, 13, 219, 0.6);
+  background: #C5D8E7;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(252,15,192, 0.76);
 }
@@ -165,7 +165,7 @@ header {
   padding: 15px 40px;
   z-index: 100;
 
-  background: rgba(18, 4, 224, 0.6);
+  background: #810fb6d7;
   backdrop-filter: blur(12px);
 
   border-bottom: 1px solid rgba(252,15,192, 0.76);
@@ -257,7 +257,7 @@ header {
   background: linear-gradient(
     120deg,
     rgba(255, 0, 255, 0.2),
-    rgba(0, 255, 255, 0.2)
+    rgba(123, 45, 187, 0.2)
   );
   mix-blend-mode: screen;
 }
@@ -323,7 +323,7 @@ header {
 }
 
 .glitch::before {
-  color: #00ffff;
+  color: #d400ff;
   z-index: -1;
   animation: glitchTop 2s infinite;
 }
