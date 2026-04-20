@@ -1,0 +1,141 @@
+.admin-container {
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 120px;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.admin-card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 20px rgba(0,255,255,0.2);
+  transition: 0.3s;
+}
+
+.admin-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px #00ffff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form input,
+.form select,
+.form textarea {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #00ffff;
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+.form button {
+  background: linear-gradient(90deg, #ff00ff, #00ffff);
+  border: none;
+  padding: 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#lista-avisos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.aviso-admin {
+  padding: 15px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.05);
+}
+
+.aviso-admin h3 {
+  color: #00ffff;
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background: #00ffff;
+}
+
+.btn-eliminar {
+  background: #ff0055;
+  color: white;
+}
+.img-admin {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.aviso-admin {
+  padding: 15px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,0,255,0.2);
+  transition: 0.3s;
+}
+
+.aviso-admin:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px #00ffff;
+}
+
+.aviso-admin h3 {
+  color: #00ffff;
+  margin: 0;
+}
+
+.acciones {
+  margin-top: 10px;
+}
+
+.btn-eliminar {
+  background: #ff0055;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+.preview-box {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.preview-box img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.destacado {
+  border: 2px solid gold !important;
+  box-shadow: 0 0 20px gold !important;
+}

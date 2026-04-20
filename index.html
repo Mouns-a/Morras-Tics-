@@ -4,10 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Morras Tics</title>
+  
+  <!-- ===================================== -->
+  <!-- CSS BASE (SIEMPRE PRIMERO) -->
+  <!-- ===================================== -->
+  <link rel="stylesheet" href="css/base/reset.css">
+  <link rel="stylesheet" href="css/base/variables.css">
+  <link rel="stylesheet" href="css/base/global.css">
 
-  <!-- CSS -->
+  <!-- ===================================== -->
+  <!-- COMPONENTES REUTILIZABLES -->
+  <!-- ===================================== -->
+  <link rel="stylesheet" href="css/componentes/navbar.css">
+  <link rel="stylesheet" href="css/componentes/cards.css">
+  <link rel="stylesheet" href="css/componentes/botones.css">
+
+  <!-- ===================================== -->
+  <!-- EFECTOS Y ANIMACIONES -->
+  <!-- ===================================== -->
+  <link rel="stylesheet" href="css/efectos/cursor.css">
+  <link rel="stylesheet" href="css/efectos/animations.css">
+
+  <!-- ===================================== -->
+  <!-- ESTILO PRINCIPAL (INDEX + SOBRE NOSOTRAS) -->
+  <!-- ⚠️ ESTE SE MANTIENE COMO PEDISTE -->
+  <!-- ===================================== -->
   <link rel="stylesheet" href="css/styles.css">
+
 </head>
+
 <div class="cursor-luz"></div>
 
 <body>
@@ -17,27 +42,26 @@
     <img src="assets/img/logo-morras-tics.png" alt="Logo Morras TICs" class="logo-img">
     <span class="logo-text">Morras TICs</span>
   </div>
-    <nav class="nav">
-  <a href="index.html" class="activo">Inicio</a>
-  <a href="SobreNosotras.html">Sobre Nosotras</a>
-  <a href="Articulos.html">Artículos</a>
-  <a href="Noticias.html">Noticias</a>
-  <a href="avisos.html">Avisos</a>
-  <a href="Contactos.html">Contacto</a>
 
-</nav>
+  <nav class="nav">
+    <a href="index.html" class="activo">Inicio</a>
+    <a href="SobreNosotras.html">Sobre Nosotras</a>
+    <a href="Articulos.html">Artículos</a>
+    <a href="Noticias.html">Noticias</a>
+    <a href="avisos.html">Avisos</a>
+    <a href="Contactos.html">Contacto</a>
+  </nav>
 </header>
 
-
 <section class="hero">
- <canvas id="circuitos"></canvas>
+  <canvas id="circuitos"></canvas>
 
   <div class="contenedor-hero">
     <h1 class="titulo glitch" data-text="Morras Tics">Morras Tics</h1>
     <p class="subtitulo">Feminizando la tecnología</p>
     <a href="#frase" class="boton">
-  <span>Conoce más sobre nosotras</span>
-</a>
+      <span>Conoce más sobre nosotras</span>
+    </a>
   </div>
 </section>
 
@@ -45,16 +69,16 @@
   <div class="frase-contenido">
     <h2 class="frase-texto">
       "Hackeando el sistema, construyendo igualdad.
-      Rompiendo barreras , reescribiendo las reglas y  diseñando un futuro donde todas tengamos un lugar en la tecnología. 
-"
+      Rompiendo barreras , reescribiendo las reglas y diseñando un futuro donde todas tengamos un lugar en la tecnología."
     </h2>
     <span class="autor">(Anónimo)</span>
   </div>
 
-<div class="imagen-epica">
-  <img src="assets/img/modificacion.png" alt="Morras TICs">
-  <div class="overlay"></div>
-</div>
+  <div class="imagen-epica">
+    <img src="assets/img/modificacion.png" alt="Morras TICs">
+    <div class="overlay"></div>
+  </div>
+</section>
 
 <footer>
   "Transformando el futuro, juntas en Morras TICs" ✨💜💻
