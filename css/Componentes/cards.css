@@ -1,0 +1,25 @@
+/* TARJETAS REUTILIZABLES
+   Noticias, avisos, artículos */
+
+.card {
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  padding: 15px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-neon);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-strong);
+}
+
+/* IMÁGENES */
+.card img {
+  border-radius: 10px;
+}
+
+/* DESTACADO */
+.destacado {
+  border: 2px solid gold;
+}

@@ -1,0 +1,19 @@
+/* CURSOR DE LUZ GLOBAL */
+
+.cursor-luz {
+  position: fixed;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  pointer-events: none;
+
+  background: radial-gradient(circle,
+    rgba(255,0,255,0.6),
+    rgba(0,255,255,0.3),
+    transparent 70%
+  );
+
+  filter: blur(20px);
+  mix-blend-mode: screen;
+  z-index: 9999;
+}
