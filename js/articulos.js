@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Error:", error);
       return;
     }
+    console.log("Artículos cargados:", data);
 
 
 
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     lista.forEach((a) => {
+
       const card = document.createElement("div");
       card.classList.add("card-articulo");
 
@@ -85,8 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       contenedor.appendChild(card);
     });
   }
-
-
 
   // =========================
   // ❤️ LIKE
