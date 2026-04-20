@@ -63,3 +63,112 @@
   --z-modal: 999;
   --z-cursor: 9999;
 }
+
+/**
+ * 🎨 VARIABLES DE TEMA GLOBAL
+ * Sistema de colores, tipografía y espaciado reutilizable
+ * IMPORTA ESTE ARCHIVO PRIMERO en todos tus HTML
+ */
+
+:root {
+  /* ============================================
+     🎨 COLORES PRIMARIOS - CYBERPUNK
+     ============================================ */
+  --color-primary: #ff00ff;      /* Magenta neón */
+  --color-secondary: #00ffff;    /* Cyan neón */
+  --color-accent: #a855f7;       /* Púrpura */
+  --color-danger: #ff0055;       /* Rojo urgente */
+  --color-success: #00ff88;      /* Verde */
+  --color-warning: #ffaa00;      /* Naranja */
+
+  /* ============================================
+     🎨 COLORES NEUTROS
+     ============================================ */
+  --color-bg-dark: #050510;      /* Fondo muy oscuro */
+  --color-bg-light: #0f0f1a;     /* Fondo claro */
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e0e0e0;
+  --color-text-tertiary: #999999;
+  --color-border: rgba(255, 0, 255, 0.3);
+
+  /* ============================================
+     📝 TIPOGRAFÍA
+     ============================================ */
+  --font-family: 'Poppins', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.5rem;
+  --font-size-4xl: 4rem;
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ============================================
+     📏 ESPACIADO
+     ============================================ */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+
+  /* ============================================
+     🎚️ BORDES Y RADIO
+     ============================================ */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 15px;
+  --radius-xl: 20px;
+  --radius-full: 50%;
+
+  /* ============================================
+     💨 TRANSICIONES Y EFECTOS
+     ============================================ */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --shadow-neon: 0 0 15px rgba(255, 0, 255, 0.3);
+  --shadow-neon-strong: 0 0 25px rgba(255, 0, 255, 0.5);
+
+  /* ============================================
+     📱 BREAKPOINTS
+     ============================================ */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* ============================================
+     🔒 Z-INDEX SCALE
+     ============================================ */
+  --z-negative: -1;
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 101;
+  --z-fixed: 102;
+  --z-modal-backdrop: 998;
+  --z-modal: 999;
+  --z-cursor: 9999;
+}
+
+/* 🌙 TEMA OSCURO (por defecto) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-dark: #050510;
+    --color-bg-light: #0f0f1a;
+  }
+}
