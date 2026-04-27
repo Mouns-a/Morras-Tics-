@@ -2,7 +2,25 @@
 💜 SOBRE NOSOTRAS | MORRAS TICS
 Este bloque mejora la estética sin afectar otras páginas
 ===================================================== */
+/* ===== FONDO GLOBAL IGUAL AL INDEX ===== */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f0b5d3; /* ← mismo fondo rosa que Index */
+  color: #fff;
+  overflow-x: hidden;
+}
 
+
+/* CANVAS FONDO */
+#circuitos {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
 /* CONTENEDOR PRINCIPAL */
 .section {
  padding-top: 140px;
@@ -37,56 +55,43 @@ Este bloque mejora la estética sin afectar otras páginas
 /* =====================================================
 📦 BLOQUES DE CONTENIDO
 ===================================================== */
-.bloque {
- display: flex;
- align-items: center;
- gap: 40px;
- margin: 60px 0;
- flex-wrap: wrap;
- animation: fadeUp 1s ease forwards;
+.rol-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+
+  transition: all 0.4s ease;
+  cursor: pointer;
+  position: relative;
 }
 
-.bloque.reverse {
- flex-direction: row-reverse;
+/* HOVER PRO */
+.rol-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow:
+    0 0 25px #ff00ff,
+    0 0 40px #00ffff;
 }
 
-.texto {
- flex: 1;
- min-width: 280px;
+/* IMAGEN MÁS GRANDE 🔥 */
+.rol-card img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  transition: 0.3s;
 }
 
-.imagen {
- flex: 1;
- min-width: 280px;
- position: relative;
+.rol-card:hover img {
+  transform: scale(1.1);
 }
 
-/* IMÁGENES */
-.imagen img {
- width: 100%;
- border-radius: 15px;
- box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
- transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.imagen:hover img {
- transform: scale(1.05);
- box-shadow: 0 0 40px #ff00ff;
-}
-
-/* OVERLAY */
-.imagen .overlay {
- position: absolute;
- inset: 0;
- border-radius: 15px;
- background: linear-gradient(
- 120deg,
- rgba(255, 0, 255, 0.2),
- rgba(0, 255, 255, 0.2)
- );
- mix-blend-mode: screen;
- pointer-events: none;
-}
 
 /* =====================================================
 🎠 CARRUSEL DE ROLES
@@ -249,4 +254,34 @@ Este bloque mejora la estética sin afectar otras páginas
 
 .rol-card p {
  color: #ddd;
+}
+/* Fuerza el mismo header que Index */
+
+
+/* Oculta descripción por defecto */
+.rol-descripcion {
+  display: none;
+  margin-top: 10px;
+  color: #ddd;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+/* Muestra descripción cuando la tarjeta está activa */
+.rol-card.activo .rol-descripcion {
+  display: block;
+}
+
+/* Rota la flechita cuando está activa */
+.flecha-svg {
+  width: 24px;
+  height: 24px;
+  stroke: #ff00ff;
+  fill: none;
+  stroke-width: 2;
+  transition: transform 0.3s ease;
+}
+
+.rol-card.activo .flecha-svg {
+  transform: rotate(180deg);
 }

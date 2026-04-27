@@ -4,11 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre Nosotras | Morras TICs</title>
+  <!-- ✅ Orden correcto: global → styles → página -->
   <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/sobrenosotras.css">
 </head>
- 
+
 <body>
+
+<div class="cursor-luz"></div>
 
 <header>
   <div class="logo-container">
@@ -24,19 +28,17 @@
     <a href="Contactos.html">Contacto</a>
   </nav>
 </header>
-  <!-- SECCIÓN SOBRE NOSOTRAS -->
+
   <section class="section" style="padding-top:120px; max-width:1200px; margin:auto;">
     <h1 class="titulo glitch" data-text="Sobre Morras TICs">Sobre Morras TICs</h1>
 
     <div class="bloque">
       <div class="texto">
-        <h2 data-text="¿Qué es Morras TICs?">¿Qué es Morras TICs?</h2>
-        <p>
-          Somos un programa de <strong>La Red por la Ciberseguridad</strong> que tiene como objetivo
+        <h2>¿Qué es Morras TICs?</h2>
+        <p>Somos un programa de <strong>La Red por la Ciberseguridad</strong> que tiene como objetivo
           formar clubes estudiantiles en centros educativos, para fortalecer la inclusión
           de las mujeres en la industria de las Tecnologías de la Información (Tics)
-          y Ciberseguridad.
-        </p>
+          y Ciberseguridad.</p>
       </div>
       <div class="imagen">
         <img src="assets/img/que es.png" alt="Morras TICs">
@@ -46,13 +48,11 @@
 
     <div class="bloque reverse">
       <div class="texto">
-        <h2 data-text="¿Quiénes somos?">¿Quiénes somos?</h2>
-        <p>
-          Somos un club actualmente integrado por alumnas de la <strong>FES Acatlán</strong>.
+        <h2>¿Quiénes somos?</h2>
+        <p>Somos un club actualmente integrado por alumnas de la <strong>FES Acatlán</strong>.
           Nos estamos capacitando en Ciberseguridad y además buscamos compartir nuestros
           conocimientos con la comunidad universitaria para que más compañeras de diversas
-          carreras se unan a nosotras.
-        </p>
+          carreras se unan a nosotras.</p>
       </div>
       <div class="imagen">
         <img src="assets/img/Mujeres colaborando .png" alt="Equipo Morras TICs">
@@ -60,131 +60,62 @@
       </div>
     </div>
 
-    <p>
-      Dentro del club existen diversos roles que las integrantes pueden elegir según
-      sus preferencias e intereses. Estos roles se seleccionan de manera voluntaria,
-      permitiendo que cada persona desempeñe una función que se ajuste a sus habilidades
-      y deseos.
-    </p>
+    <p>Dentro del club existen diversos roles que las integrantes pueden elegir según
+      sus preferencias e intereses.</p>
 
-        <h2>¿Por qué y cuáles roles existen dentro del club?</h2>
-    <p>
-      Desempeñar un rol en nuestro equipo es de suma importancia, ya que una organización
+    <h2>¿Por qué y cuáles roles existen dentro del club?</h2>
+    <p>Desempeñar un rol en nuestro equipo es de suma importancia, ya que una organización
       adecuada y una distribución eficiente de tareas entre las integrantes del club
-      es indispensable para alcanzar nuestros objetivos.
-    </p>
-    <p>
-      Los roles bien definidos permiten aprovechar al máximo las habilidades y fortalezas
+      es indispensable para alcanzar nuestros objetivos.</p>
+    <p>Los roles bien definidos permiten aprovechar al máximo las habilidades y fortalezas
       de cada integrante, promover la responsabilidad colectiva y asegurar que cada
-      proyecto avance de manera organizada y efectiva.
-    </p>
-    <p>
-      El trabajo conjunto y la colaboración de todas son esenciales para el éxito
-      de nuestras actividades. Al asumir un rol dentro del club, cada integrante
-      no solo aporta su talento, sino que también fortalece el espíritu de comunidad,
-      liderazgo y crecimiento que caracteriza a Morras TICs.
-    </p>
-<!-- SECCIÓN ROLES -->
-<h1 class="glitch" data-text="Roles dentro del Club">Roles dentro del Club</h1>
+      proyecto avance de manera organizada y efectiva.</p>
+    <p>El trabajo conjunto y la colaboración de todas son esenciales para el éxito
+      de nuestras actividades.</p>
 
-<p class="intro-roles">
-  Cada integrante puede elegir el rol que mejor se adapte a sus habilidades e intereses.
-  Haz clic en cada botón para conocer sus responsabilidades.
-</p>
+    <h1 class="glitch" data-text="Roles dentro del Club">Roles dentro del Club</h1>
+    <p class="intro-roles">Haz clic en cada tarjeta para conocer sus responsabilidades.</p>
 
-<p class="intro-roles">
-  Haz clic en cada tarjeta para conocer sus responsabilidades.
-</p>
-
-<div class="roles-grid">
-
-  <div class="rol-card">
-    <img src="assets/img/Lider_equipo.png" alt="Líder de Equipo">
-    <h3>Líder de Equipo</h3>
-
-    <!-- Ícono SVG -->
-    <div class="icono-svg">
-      <svg viewBox="0 0 24 24" class="flecha-svg">
-        <path d="M6 9l6 6 6-6"/>
-      </svg>
+    <div class="roles-grid">
+      <div class="rol-card">
+        <img src="assets/img/Lider_equipo.png" alt="Líder de Equipo">
+        <h3>Líder de Equipo</h3>
+        <div class="icono-svg"><svg viewBox="0 0 24 24" class="flecha-svg"><path d="M6 9l6 6 6-6"/></svg></div>
+        <p class="rol-descripcion">Coordina y dirige comisiones específicas dentro del club.</p>
+      </div>
+      <div class="rol-card">
+        <img src="assets/img/secretaria.png" alt="Secretaria">
+        <h3>Secretaria</h3>
+        <div class="icono-svg"><svg viewBox="0 0 24 24" class="flecha-svg"><path d="M6 9l6 6 6-6"/></svg></div>
+        <p class="rol-descripcion">Convoca reuniones y lleva la minuta de las actividades.</p>
+      </div>
+      <div class="rol-card">
+        <img src="assets/img/vocera.png" alt="Vocera">
+        <h3>Vocera</h3>
+        <div class="icono-svg"><svg viewBox="0 0 24 24" class="flecha-svg"><path d="M6 9l6 6 6-6"/></svg></div>
+        <p class="rol-descripcion">Representa al club ante instituciones y la comunidad.</p>
+      </div>
+      <div class="rol-card">
+        <img src="assets/img/promotora.png" alt="Promotora">
+        <h3>Promotora</h3>
+        <div class="icono-svg"><svg viewBox="0 0 24 24" class="flecha-svg"><path d="M6 9l6 6 6-6"/></svg></div>
+        <p class="rol-descripcion">Difunde actividades y atrae nuevas integrantes.</p>
+      </div>
+      <div class="rol-card">
+        <img src="assets/img/corresponsal.png" alt="Corresponsal">
+        <h3>Corresponsal</h3>
+        <div class="icono-svg"><svg viewBox="0 0 24 24" class="flecha-svg"><path d="M6 9l6 6 6-6"/></svg></div>
+        <p class="rol-descripcion">Documenta eventos mediante fotografías y contenido digital.</p>
+      </div>
     </div>
 
-    <p class="rol-descripcion">
-      Coordina y dirige comisiones específicas dentro del club.
-    </p>
-  </div>
+  </section>
 
-  <div class="rol-card">
-    <img src="assets/img/secretaria.png" alt="Secretaria">
-    <h3>Secretaria</h3>
-
-    <div class="icono-svg">
-      <svg viewBox="0 0 24 24" class="flecha-svg">
-        <path d="M6 9l6 6 6-6"/>
-      </svg>
-    </div>
-
-    <p class="rol-descripcion">
-      Convoca reuniones y lleva la minuta de las actividades.
-    </p>
-  </div>
-
-  <div class="rol-card">
-    <img src="assets/img/vocera.png" alt="Vocera">
-    <h3>Vocera</h3>
-
-    <div class="icono-svg">
-      <svg viewBox="0 0 24 24" class="flecha-svg">
-        <path d="M6 9l6 6 6-6"/>
-      </svg>
-    </div>
-
-    <p class="rol-descripcion">
-      Representa al club ante instituciones y la comunidad.
-    </p>
-  </div>
-
-  <div class="rol-card">
-    <img src="assets/img/promotora.png" alt="Promotora">
-    <h3>Promotora</h3>
-
-    <div class="icono-svg">
-      <svg viewBox="0 0 24 24" class="flecha-svg">
-        <path d="M6 9l6 6 6-6"/>
-      </svg>
-    </div>
-
-    <p class="rol-descripcion">
-      Difunde actividades y atrae nuevas integrantes.
-    </p>
-  </div>
-
-  <div class="rol-card">
-    <img src="assets/img/corresponsal.png" alt="Corresponsal">
-    <h3>Corresponsal</h3>
-
-    <div class="icono-svg">
-      <svg viewBox="0 0 24 24" class="flecha-svg">
-        <path d="M6 9l6 6 6-6"/>
-      </svg>
-    </div>
-
-    <p class="rol-descripcion">
-      Documenta eventos mediante fotografías y contenido digital.
-    </p>
-  </div>
-
-</div>
-
-</div>
-  <!-- FOOTER -->
   <footer>
     <p>© 2026 Morras TICs "Transformando el futuro, juntas en Morras TICs" ✨💜💻</p>
   </footer>
-<div class="cursor-luz"></div>
-  <!-- JS -->
-    <script src="js/global.js"></script>
-    
+
+  <script src="js/global.js"></script>
 
 </body>
 </html>

@@ -4,22 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Noticias | Morras TIC's</title>
-
+  <!-- ✅ Orden correcto: global → styles → página -->
+  <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/noticias.css">
-  <link rel="stylesheet" href="css/global.css">
-
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+<div class="cursor-luz"></div>
 
 <header>
   <div class="logo-container">
     <img src="assets/img/logo-morras-tics.png" alt="Logo Morras TICs" class="logo-img">
     <span class="logo-text">Morras TICs</span>
   </div>
-
   <nav class="nav">
     <a href="index.html">Inicio</a>
     <a href="SobreNosotras.html">Sobre Nosotras</a>
@@ -30,16 +30,13 @@
   </nav>
 </header>
 
-<section class="noticias">
+<section class="noticias" style="padding-top:120px; max-width:1200px; margin:auto;">
 
-  <h1 class="titulo">📰 Noticias Morras TICs</h1>
+  <h1 class="titulo glitch" data-text="Noticias Morras TICs">📰 Noticias Morras TICs</h1>
 
   <input type="text" id="buscador-noticias" placeholder="Buscar noticia..." class="buscador">
 
-  <!-- ⭐ DESTACADA -->
   <div id="destacada"></div>
-
-  <!-- 📰 LISTA -->
   <div id="contenedor-noticias" class="grid-noticias"></div>
 
 </section>
@@ -48,11 +45,8 @@
   <p>© 2026 Morras TIC's</p>
 </footer>
 
-<div class="cursor-luz"></div>
-
-<!-- ✅ JS BIEN SEPARADO -->
- <script type="module" src="js/noticias.js"></script>
 <script src="js/global.js"></script>
+<script type="module" src="js/noticias.js"></script>
 
 </body>
 </html>
