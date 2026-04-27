@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Morras TICs</title>
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,0,255,0.3);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(255,0,255,0.2);
+    }
+    .login-box h1 {
+      text-align: center;
+      color: #ff00ff;
+      text-shadow: 0 0 10px #ff00ff;
+      margin-bottom: 30px;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,0,255,0.4);
+      background: rgba(0,0,0,0.3);
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    .login-box input:focus {
+      outline: none;
+      border-color: #00ffff;
+      box-shadow: 0 0 10px #00ffff;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 20px;
+      border: none;
+      background: linear-gradient(90deg, #ff00ff, #00ffff);
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .login-box button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px #ff00ff;
+    }
+    #mensaje {
+      text-align: center;
+      margin-top: 15px;
+      color: #ff0055;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-luz"></div>
+  <div class="login-container">
+    <div class="login-box">
+      <h1>🔐 Admin Morras TICs</h1>
+      <input type="email" id="correo" placeholder="Correo electrónico">
+      <input type="password" id="password" placeholder="Contraseña">
+      <button id="btn-login">Iniciar sesión</button>
+      <p id="mensaje"></p>
+  </div>
+  <script src="js/global.js"></script>
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

@@ -469,3 +469,10 @@ header {
  border-top: 1px solid #ff00ff;
  font-size: 0.95rem;
 }
+.card-articulo p,
+.card-destacada p,
+.card-aviso p {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}

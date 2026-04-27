@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const contadores = document.querySelectorAll(".contador");
 
     contadores.forEach(contador => {
-      const fechaMeta = contador.getAttribute("data-fecha");
+      const objetivo = new Date(fechaMeta + "T23:59:59");
       if (!fechaMeta) return;
 
       const intervalo = setInterval(() => {

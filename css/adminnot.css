@@ -141,7 +141,7 @@
 .preview-box:not(:empty) {
   display: block !important;
 }
-/* En adminnot.css o styles.css — al final */
+
 .card-articulo p,
 .card-destacada p,
 .card-aviso p {

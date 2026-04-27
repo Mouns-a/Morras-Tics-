@@ -238,3 +238,72 @@ footer {
   .bloque { flex-direction: column; text-align: center; }
   .bloque.reverse { flex-direction: column; }
 }
+/* ✅ NAV SCROLLABLE HORIZONTAL */
+.nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none; /* Oculta scrollbar en Firefox */
+  -ms-overflow-style: none; /* Oculta scrollbar en IE */
+  padding-bottom: 2px;
+}
+
+/* Oculta scrollbar en Chrome/Safari */
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav a {
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: 0.3s;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 0, 255, 0.2);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+  white-space: nowrap; /* ✅ evita que los links se partan */
+  flex-shrink: 0; /* ✅ evita que se compriman */
+}
+
+.nav a:hover {
+  color: #ff00ff;
+  box-shadow: 0 0 20px #ff00ff, inset 0 0 10px #ff00ff;
+  transform: translateY(-2px);
+}
+
+.nav a.activo {
+  color: #ff00ff;
+  box-shadow: 0 0 25px #ff00ff, inset 0 0 15px #ff00ff;
+}
+
+/* ✅ Header no rompe en pantallas chicas */
+header {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.logo-container {
+  flex-shrink: 0; /* ✅ el logo nunca se comprime */
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 10px 15px;
+    gap: 10px;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+  }
+
+  .nav a {
+    font-size: 0.78rem;
+    padding: 6px 10px;
+  }
+}
