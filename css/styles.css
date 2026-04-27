@@ -10,7 +10,7 @@ body {
  margin: 0;
  font-family: 'Poppins', sans-serif;
  background: #f0b5d3;
- color: #fff;
+ color: #dd158a;
  overflow-x: hidden; /* Evita scroll horizontal */
 }
 
@@ -169,12 +169,7 @@ footer {
   padding: 5px 10px;
  }
 }
-
-/*Final de Index*/
-
-/* Menú*/
-
-/* NAVBAR */
+/* BLOQUES CON IMAGEN */
 header {
  position: fixed;
  top: 0;
@@ -202,7 +197,7 @@ header {
  padding: 8px 16px;
  border-radius: 20px;
  text-decoration: none;
- color: #fff;
+ color: #ffffff;
  font-weight: 500;
  transition: 0.3s;
  background: rgba(255, 255, 255, 0.05);
