@@ -93,12 +93,22 @@ previewBtn.addEventListener("click", () => {
         const file = document.getElementById("imagen").files[0];
         let url = imagenActual;
 
-        if (file) {
-            const path = `articulos/${Date.now()}_${file.name}`;
-            await supabase.storage.from("imagenes").upload(path, file);
-            url = supabase.storage.from("imagenes").getPublicUrl(path).data.publicUrl;
-        }
+if (file) {
+    const path = `articulos/${Date.now()}_${file.name}`;
+    const { error: uploadError } = await supabase.storage
+        .from("imagenes")
+        .upload(path, file, { upsert: true });
 
+    if (uploadError) {
+        console.error("Error subiendo imagen:", uploadError);
+    } else {
+        const { data: urlData } = supabase.storage
+            .from("imagenes")
+            .getPublicUrl(path);
+        url = urlData.publicUrl;
+        console.log("URL generada:", url); // ← para verificar
+    }
+}
         const payload = {
             titulo: document.getElementById("titulo").value,
             // CORRECCIÓN: Leemos de 'descripcion' y guardamos en 'contenido'
