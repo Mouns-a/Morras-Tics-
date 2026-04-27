@@ -1,4 +1,3 @@
-
 import { supabase } from "./supabase.js";
 import { verificarSesion, cerrarSesion } from "./auth.js";
 
