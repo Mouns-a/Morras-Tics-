@@ -138,3 +138,6 @@
   border: 2px solid gold !important;
   box-shadow: 0 0 20px gold !important;
 }
+.preview-box:not(:empty) {
+  display: block !important;
+}
