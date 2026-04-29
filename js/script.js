@@ -32,7 +32,7 @@ function drawConnections() {
       if (dist < 120) {
         let opacity = 1 - dist / 120;
 
-        ctx.strokeStyle = `rgba(0,255,255,${opacity})`;
+        ctx.strokeStyle = `rgba(192,132,252,${opacity})`; 
         ctx.lineWidth = 1;
 
         ctx.beginPath();

@@ -53,40 +53,108 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     lista.forEach((a) => {
-
       const card = document.createElement("div");
       card.classList.add("card-articulo");
+      if (a.destacado) card.classList.add("destacado");
 
-      card.innerHTML = `
-        ${a.imagen ? `<img src="${a.imagen}" class="img-articulo">` : ""}
+card.innerHTML = `
+  ${a.imagen ? `<img src="${a.imagen}" class="img-aviso" alt="${a.titulo}">` : ""}
 
-        <h3>${a.titulo}</h3>
-        <p><strong>${a.autor}</strong></p>
-        <small>${tiempoRelativo(a.fecha)}</small>
-        <p>${(a.contenido||"").substring(0, 100)}...</p>
+  <div class="contenido">
+    <h3>${a.titulo}</h3>
 
-        <div class="acciones">
-          <button onclick="like(${a.id})">❤️ ${a.likes}</button>
-          <button onclick="toggleComentarios(${a.id})">💬 ${a.comentarios.length}</button>
-        </div>
+    <p>
+      ${(a.contenido || "").substring(0, 150)}...
+    </p>
 
-        <div class="comentarios" id="comentarios-${a.id}" style="display:none;">
-          
-          <input type="text" id="nombre-${a.id}" placeholder="Tu nombre">
-          <input type="text" id="input-${a.id}" placeholder="Escribe un comentario...">
-          <button onclick="comentar(${a.id})">Enviar</button>
+    <div class="meta">
+      <span>✍️ ${a.autor || "Anónimo"}</span>
+      <span>📅 ${tiempoRelativo(a.fecha)}</span>
+    </div>
 
-          <div class="lista-comentarios">
-            ${a.comentarios.map(c => `
-              <p>💬 <strong>${c.nombre}</strong>: ${c.texto}</p>
-            `).join("")}
-          </div>
-        </div>
-      `;
+    <div class="acciones">
+
+      <button onclick="like(${a.id})" class="btn-like">
+        ❤️ ${a.likes}
+      </button>
+
+      <button onclick="toggleComentarios(${a.id})" class="btn-comentarios">
+        💬 ${a.comentarios.length}
+      </button>
+
+      <button onclick="verArticulo(${a.id})" class="btn-leer">
+        📖 Leer más
+      </button>
+
+    </div>
+
+    <div id="comentarios-${a.id}" class="comentarios-box" style="display:none;">
+
+      <div class="lista-comentarios">
+        ${
+          a.comentarios.length > 0
+            ? a.comentarios.map(c => `
+              <div class="comentario">
+                <strong>${c.nombre}</strong>
+                <p>${c.texto}</p>
+              </div>
+            `).join("")
+            : "<p>Sin comentarios aún ✨</p>"
+        }
+      </div>
+
+      <input 
+        type="text" 
+        id="nombre-${a.id}" 
+        placeholder="Tu nombre"
+      >
+
+      <textarea 
+        id="input-${a.id}" 
+        placeholder="Escribe un comentario..."
+      ></textarea>
+
+      <button onclick="comentar(${a.id})">
+        Enviar comentario
+      </button>
+
+    </div>
+  </div>
+`;
 
       contenedor.appendChild(card);
     });
   }
+
+  // ✅ Modal ver artículo completo
+  window.verArticulo = (id) => {
+    const articulo = articulos.find(a => a.id === id);
+    if (!articulo) return;
+
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    modal.id = "modal-articulo";
+
+    modal.innerHTML = `
+      <div class="modal-contenido">
+        <span class="cerrar" onclick="document.getElementById('modal-articulo').remove()">✕</span>
+        ${articulo.imagen ? `<img src="${articulo.imagen}" style="width:100%;border-radius:10px;margin-bottom:15px;">` : ""}
+        <h2>${articulo.titulo}</h2>
+        <p><strong>✍️ ${articulo.autor}</strong> · <small>${tiempoRelativo(articulo.fecha)}</small></p>
+        <hr style="border-color:#ff00ff33; margin:15px 0;">
+        <p style="line-height:1.8; white-space:pre-wrap;">${articulo.contenido || ""}</p>
+      </div>
+    `;
+
+    // Cierra al hacer clic fuera
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.remove();
+    });
+
+    document.body.appendChild(modal);
+  };
+
+  
 
   // =========================
   // ❤️ LIKE

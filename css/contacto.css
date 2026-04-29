@@ -1,204 +1,806 @@
-/* =========================
-💜 CONTACTO PAGE - CYBER STYLE
-========================= */
+/*=====================================================
+   🌌 FONDO GLOBAL DE LA PÁGINA
+   ===================================================== */
+body {
+
+  /* Quita márgenes automáticos */
+  margin: 0;
+
+  /* Fuente principal */
+  font-family: 'Poppins', sans-serif;
+
+  /* Fondo rosa suave */
+  background: #f0b5d3;
+
+  /* Color del texto */
+  color: rgb(212, 13, 129);
+
+  /* Evita movimiento horizontal */
+  overflow-x: hidden;
+}
+/* =====================================================
+   🧩 REJILLA FUTURISTA DE FONDO
+   ===================================================== */
+
+/* Crea líneas tipo holograma/grid cyberpunk */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px
+    );
+  /* Tamaño de cada cuadrito */
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: -1;
+}
+/* =====================================================
+   📦 SECCIÓN PRINCIPAL
+   ===================================================== */
 
 .section {
   max-width: 900px;
   margin: auto;
-  padding-top: 120px;
+  padding-top: 140px;
+  padding-bottom: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* Animación de entrada */
   animation: fadeIn 1s ease-in-out;
 }
-
-/* TÍTULO NEÓN */
+/* =====================================================
+   🌟 TÍTULO PRINCIPAL
+   ===================================================== */
 .titulo {
   text-align: center;
-  color: #ff00ff;
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  /* Degradado futurista */
+  background: linear-gradient(
+    90deg,
+    #ff00ff,
+    #00ffff
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Glow brillante */
+  filter: drop-shadow(
+    0 0 12px rgba(255,0,255,0.7)
+  );
+  /* Animación del brillo */
+  animation: glowTitulo 3s infinite alternate;
 }
 
-/* CAJAS ÉPICAS (Efecto Glassmorphism) */
+
+/* =====================================================
+   ✨ CAJAS GLASSMORPHISM
+   ===================================================== */
+
+/* Todas las cajas comparten este diseño */
 .contenedor-info,
 .postulacion-box,
 .dudas-seccion,
 .ciberseguridad-seccion {
-  background: rgba(255, 255, 255, 0.05);
+
+  /* Fondo estilo cristal */
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03)
+  );
   border: 1px solid rgba(255, 0, 255, 0.3);
-  border-radius: 20px;
-  padding: 25px;
-  margin: 30px 0;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.2), inset 0 0 10px rgba(255, 0, 255, 0.1);
-  transition: 0.4s;
+  border-radius: 25px;
+  padding: 35px;
+  margin: 35px 0;
+  /* Efecto vidrio */
+  backdrop-filter: blur(14px);
+  /* Sombras suaves */
+  box-shadow:
+    0 0 20px rgba(255,0,255,0.1),
+    inset 0 0 15px rgba(255,255,255,0.03);
+  transition: 0.4s ease;
+  /* Necesario para efectos internos */
+  position: relative;
+  overflow: hidden;
 }
+/* =====================================================
+   ⚡ GLOW INTERNO DE LAS CAJAS
+   ===================================================== */
+
+/* Luz decorativa dentro de cada caja */
+.contenedor-info::before,
+.postulacion-box::before,
+.dudas-seccion::before,
+.ciberseguridad-seccion::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,0,255,0.18),
+      transparent 70%
+    );
+  top: -120px;
+  right: -120px;
+  pointer-events: none;
+}
+/* =====================================================
+   🚀 EFECTO HOVER EN LAS CAJAS
+   ===================================================== */
 
 .contenedor-info:hover,
 .postulacion-box:hover,
 .dudas-seccion:hover,
 .ciberseguridad-seccion:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 30px rgba(255, 0, 255, 0.5), inset 0 0 15px rgba(255, 0, 255, 0.2);
+  /* Las cajas flotan */
+  transform: translateY(-10px);
+  /* Glow más fuerte */
+  box-shadow:
+    0 0 35px rgba(255,0,255,0.35),
+    0 0 50px rgba(0,255,255,0.15);
   border-color: #ff00ff;
 }
 
-/* REQUISITOS */
+
+/* =====================================================
+   📝 LISTA DE REQUISITOS
+   ===================================================== */
+
 .requisitos {
   list-style: none;
   padding: 0;
-  line-height: 1.8;
 }
-
+/* Cada elemento individual */
 .requisitos li {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #582340;
   transition: 0.3s;
-  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-
+/* Hover interactivo */
 .requisitos li:hover {
-  transform: translateX(10px);
+  transform: translateX(15px);
   color: #00ffff;
   text-shadow: 0 0 8px #00ffff;
 }
 
-/* FORMULARIO CYBER */
+
+/* =====================================================
+   📧 FORMULARIO
+   ===================================================== */
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 18px;
 }
+
+
+/* =====================================================
+   ✏️ INPUTS Y TEXTAREA
+   ===================================================== */
 
 .form input,
 .form textarea {
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 0, 255, 0.5);
-  background: rgba(0, 0, 0, 0.3);
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 0, 255, 0.4);
+  background: rgba(255,255,255,0.06);
   color: white;
-  outline: none;
+  font-family: inherit;
   transition: 0.3s;
+/* Luz interna */
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,0.03);
 }
 
+
+/* Placeholder */
+.form input::placeholder,
+.form textarea::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+
+/* Cuando haces clic */
 .form input:focus,
 .form textarea:focus {
   border-color: #00ffff;
-  box-shadow: 0 0 10px #00ffff;
+  box-shadow:
+    0 0 15px #00ffff,
+    inset 0 0 10px rgba(255,255,255,0.05);
+  outline: none;
 }
 
-/* BOTÓN DE ENVIAR */
+
+/* =====================================================
+   🚀 BOTÓN FUTURISTA
+   ===================================================== */
+
 .form button {
-  padding: 12px;
-  border-radius: 20px;
-  border: none;
-  font-weight: bold;
-  text-transform: uppercase;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-weight: 700;
+  font-size: 1rem;
   letter-spacing: 1px;
-  background: linear-gradient(90deg, #ff00ff, #00ffff);
   color: white;
   cursor: pointer;
-  transition: 0.3s;
+  /* Fondo animado */
+  background:
+    linear-gradient(
+      135deg,
+      #ff00ff,
+      #7a00ff,
+      #00ffff
+    );
+
+  background-size: 300% 300%;
+  transition: 0.4s ease;
+  animation: gradientMove 6s ease infinite;
+  box-shadow:
+    0 0 15px rgba(255,0,255,0.4),
+    0 0 35px rgba(0,255,255,0.15);
 }
 
+
+/* Hover del botón */
 .form button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px #ff00ff;
+  letter-spacing: 2px;
+  box-shadow:
+    0 0 25px #ff00ff,
+    0 0 45px #00ffff;
 }
 
-/* REDES SOCIALES E ICONOS */
+
+/* =====================================================
+   📱 REDES SOCIALES
+   ===================================================== */
+
 .redes {
   display: flex;
   gap: 20px;
   justify-content: center;
-  margin: 20px 0;
+  margin-top: 30px;
   flex-wrap: wrap;
 }
 
+
+/* =====================================================
+   🔵 ICONOS SOCIALES
+   ===================================================== */
+
 .social-icon {
-  font-size: 24px;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   color: white;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s;
+  font-size: 24px;
   text-decoration: none;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
-
-.social-icon:hover {
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 0 20px currentColor; /* Usa el color de la red social para el brillo */
-}
-
-/* Colores de marca específicos */
-.facebook { background-color: #1877F2; }
-.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
-.tiktok { background-color: #000; border: 1px solid #00ffff; }
-.x-twitter { background-color: #000; }
-.youtube { background-color: #FF0000; }
-.linkedin { background-color: #0077B5; }
-.web { background-color: #444; }
-
-/* ENLACES Y CORREO */
-a {
-  color: #00ffff;
-  text-decoration: none;
+  transition: 0.4s;
   position: relative;
-  transition: 0.3s;
+  overflow: hidden;
+  /* Fondo transparente */
+  background: rgba(255,255,255,0.08);
+  /* Blur tipo vidrio */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    0 0 10px rgba(255,255,255,0.05);
+}
+/* Reflejo animado */
+.social-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.25),
+      transparent
+    );
+  transform: translateX(-100%);
+  transition: 0.6s;
+}
+/* Animación del reflejo */
+.social-icon:hover::before {
+  transform: translateX(100%);
 }
 
-a:hover {
-  text-shadow: 0 0 8px #ff00ff, 0 0 15px #00ffff;
+/* Hover de iconos */
+.social-icon:hover {
+  transform:
+    translateY(-10px)
+    rotate(8deg);
+  box-shadow:
+    0 0 20px currentColor;
 }
 
-.correo {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 12px 25px;
-  border-radius: 30px;
-  background: linear-gradient(90deg, #ff00ff, #00ffff);
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+
+/* =====================================================
+   🎨 COLORES OFICIALES REDES
+   ===================================================== */
+
+.facebook {
+  background-color: #1877F2;
+}
+.instagram {
+  background:
+    linear-gradient(
+      45deg,
+      #f09433,
+      #e6683c,
+      #dc2743,
+      #cc23b6,
+      #bc1888
+    );
 }
 
-/* BOTÓN CAPACITACIÓN IA */
-.btn-curso {
-  display: inline-block;
-  padding: 15px 25px;
-  background: linear-gradient(45deg, #a855f7, #6366f1);
-  color: white;
-  border-radius: 30px;
-  font-weight: bold;
-  margin: 20px 0;
-  transition: 0.3s;
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+.tiktok {
+  background-color: #000;
+  border: 1px solid #00ffff;
+}
+.x-twitter {
+  background-color: #000;
+}
+.linkedin {
+  background-color: #0077B5;
 }
 
-.btn-curso:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px #a855f7;
-}
 
-/* SEPARADOR NEÓN */
+/* =====================================================
+   ⚡ LÍNEA NEÓN
+   ===================================================== */
+
 hr {
   border: none;
   height: 1px;
-  margin: 40px 0;
-  background: linear-gradient(to right, transparent, #ff00ff, transparent);
+  margin: 50px 0;
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      #ff00ff,
+      #00ffff,
+      transparent
+    );
 }
 
-/* ANIMACIÓN DE ENTRADA */
+
+/* =====================================================
+   🎬 ANIMACIONES
+   ===================================================== */
+/* Entrada suave de la página */
 @keyframes fadeIn {
+
   from {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+/* Glow del título */
+@keyframes glowTitulo {
+  from {
+    filter:
+      drop-shadow(0 0 10px #ff00ff);
+  }
+  to {
+    filter:
+      drop-shadow(0 0 25px #00ffff);
+  }
+}
+/* Movimiento del degradado del botón */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+/* =====================================================
+   📱 RESPONSIVE PARA CELULARES
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+  .section {
+    padding-top: 110px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .titulo {
+    font-size: 2rem;
+    letter-spacing: 3px;
+  }
+
+  .contenedor-info,
+  .postulacion-box,
+  .dudas-seccion,
+  .ciberseguridad-seccion {
+    padding: 25px;
+  }
+
+  .social-icon {
+    width: 55px;
+    height: 55px;
+  }
+}
+/* =====================================================
+   ✨ GLITTER / BURBUJAS ANIMADAS
+   ===================================================== */
+/* Capa principal de partículas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  /* Varias burbujas brillantes */
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.7) 2px, transparent 3px),
+    radial-gradient(circle, rgba(255,0,255,0.4) 1.5px, transparent 3px),
+    radial-gradient(circle, rgba(0,255,255,0.4) 2px, transparent 3px),
+    radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 2px);
+  background-size:
+    180px 180px,
+    250px 250px,
+    300px 300px,
+    150px 150px;
+  animation: glitterMove 18s linear infinite;
+  opacity: 0.7;
+}
+/* Segunda capa más suave */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle,
+      rgba(255,255,255,0.25) 1px,
+      transparent 2px
+    );
+  background-size: 120px 120px;
+  animation: glitterFloat 25s linear infinite;
+  opacity: 0.4;
+}
+/* =====================================================
+   🌌 ANIMACIÓN DE MOVIMIENTO
+   ===================================================== */
+/* Movimiento diagonal lento */
+@keyframes glitterMove {
+  from {
+    transform:
+      translateY(0)
+      translateX(0);
+  }
+  to {
+    transform:
+      translateY(-120px)
+      translateX(-60px);
+  }
+}
+/* Movimiento flotante */
+@keyframes glitterFloat {
+  from {
+    transform:
+      translateY(0)
+      translateX(0);
+  }
+  to {
+    transform:
+      translateY(-80px)
+      translateX(40px);
+  }
+}
+/* =====================================================
+   🚀 BOTONES CYBER FUTURISTAS
+   ===================================================== */
+
+.cyber-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 14px 26px;
+
+  margin-top: 15px;
+
+  border-radius: 18px;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  letter-spacing: 1px;
+
+  color: white;
+
+  position: relative;
+
+  overflow: hidden;
+
+  /* Fondo glassmorphism */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,255,0.7),
+      rgba(0,255,255,0.6)
+    );
+
+  border: 1px solid rgba(255,255,255,0.2);
+
+  backdrop-filter: blur(10px);
+
+  transition: 0.4s ease;
+
+  box-shadow:
+    0 0 15px rgba(255,0,255,0.3),
+    0 0 30px rgba(0,255,255,0.15);
+}
+
+
+/* ✨ Reflejo animado */
+.cyber-btn::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.35),
+      transparent
+    );
+
+  transform: translateX(-120%);
+
+  transition: 0.7s;
+}
+
+
+/* 🌟 Hover */
+.cyber-btn:hover {
+
+  transform:
+    translateY(-5px)
+    scale(1.03);
+
+  letter-spacing: 2px;
+
+  box-shadow:
+    0 0 25px #ff00ff,
+    0 0 40px #00ffff;
+}
+
+
+/* Activa el reflejo */
+.cyber-btn:hover::before {
+
+  transform: translateX(120%);
+}
+/* =====================================================
+   🤖 BOTÓN CAPACITACIONES IA
+   ===================================================== */
+
+.cursos-container {
+
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 30px;
+}
+
+
+/* Botón principal */
+.btn-curso {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 16px 28px;
+
+  border-radius: 20px;
+
+  text-decoration: none;
+
+  font-weight: 700;
+
+  font-size: 1rem;
+
+  color: white;
+
+  position: relative;
+
+  overflow: hidden;
+
+  /* Fondo futurista */
+  background:
+    linear-gradient(
+      135deg,
+      #ff00ff,
+      #8b00ff,
+      #00ffff
+    );
+
+  background-size: 300% 300%;
+
+  border: 1px solid rgba(255,255,255,0.2);
+
+  backdrop-filter: blur(12px);
+
+  transition: 0.4s ease;
+
+  animation: gradientCyber 6s ease infinite;
+
+  box-shadow:
+    0 0 20px rgba(255,0,255,0.35),
+    0 0 40px rgba(0,255,255,0.15);
+}
+
+
+/* 🤖 Icono del robot */
+.btn-curso i {
+
+  font-size: 1.2rem;
+
+  transition: 0.4s ease;
+}
+
+
+/* ✨ Reflejo glassmorphism */
+.btn-curso::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.35),
+      transparent
+    );
+
+  transform: translateX(-120%);
+
+  transition: 0.7s;
+}
+
+
+/* 🚀 Hover */
+.btn-curso:hover {
+
+  transform:
+    translateY(-6px)
+    scale(1.03);
+
+  letter-spacing: 1px;
+
+  box-shadow:
+    0 0 30px #ff00ff,
+    0 0 50px #00ffff;
+}
+
+
+/* Movimiento del brillo */
+.btn-curso:hover::before {
+
+  transform: translateX(120%);
+}
+
+
+/* Robot animado */
+.btn-curso:hover i {
+
+  transform:
+    rotate(-10deg)
+    scale(1.2);
+
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   🌈 ANIMACIÓN DEL DEGRADADO
+   ===================================================== */
+
+@keyframes gradientCyber {
+
+  0% {
+
+    background-position: 0% 50%;
+  }
+
+  50% {
+
+    background-position: 100% 50%;
+  }
+
+  100% {
+
+    background-position: 0% 50%;
+  }
+}
+/* 🌐 Página web */
+.web {
+
+  background:
+    linear-gradient(
+      135deg,
+      #7f5cff,
+      #00ffff
+    );
+}
+
+
+/* ▶️ YouTube */
+.youtube {
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff0000,
+      #ff4d4d
+    );
+}
+
+
+/* ❌ X / Twitter */
+.x-twitter {
+
+  background:
+    linear-gradient(
+      135deg,
+      #000000,
+      #2b2b2b
+    );
 }

@@ -92,8 +92,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const categoria = document.getElementById("categoria")?.value || "General";
       const urgente = document.getElementById("urgente")?.checked || false;
       const destacado = document.getElementById("destacado")?.checked || false;
+      link: document.getElementById("link").value || null
 
-      const payload = { titulo, descripcion, fecha, categoria, urgente, destacado };
+      const payload = { titulo, descripcion, fecha, categoria, urgente, destacado, link };
 
       if (editandoId) {
         await supabase.from("avisos").update(payload).eq("id", editandoId);

@@ -1,29 +1,39 @@
+/* ============================================================
+   🛠️ PANEL DE ADMINISTRACIÓN (ADMIN)
+   ============================================================ */
+
 .admin-container {
   max-width: 1200px;
   margin: auto;
-  padding-top: 120px;
+  padding-top: 120px; /* Para que no lo tape el menú superior */
 }
 
+/* El diseño dividido: Formulario a un lado, Lista al otro */
 .admin-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
   gap: 30px;
 }
 
+/* 📋 TARJETAS DEL PANEL */
 .admin-card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   padding: 25px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 0 20px rgba(0,255,255,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
   transition: 0.3s;
 }
 
 .admin-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 30px #00ffff;
+  box-shadow: 0 0 30px #00ffff; /* Brillo cian al pasar el mouse */
 }
+
+/* ============================================================
+   📝 FORMULARIO DE CARGA
+   ============================================================ */
 
 .form {
   display: flex;
@@ -37,17 +47,49 @@
   padding: 12px;
   border-radius: 10px;
   border: 1px solid #00ffff;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   color: white;
+  outline: none;
 }
 
+/* Botón principal de "Publicar" con degradado */
 .form button {
   background: linear-gradient(90deg, #ff00ff, #00ffff);
   border: none;
-  padding: 12px;
+  padding: 15px;
   border-radius: 20px;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
+  transition: 0.3s;
 }
+
+.form button:hover {
+  filter: brightness(1.2);
+  transform: scale(1.02);
+}
+
+/* 🖼️ CAJA DE PREVISUALIZACIÓN (Aparece cuando subes una foto) */
+.preview-box {
+  margin-top: 20px;
+  padding: 20px;
+  border: 2px dashed #00ffff; /* Borde punteado estilo "recorte" */
+  border-radius: 15px;
+  display: none; /* Se oculta si está vacía */
+}
+
+.preview-box:not(:empty) {
+  display: block !important; /* Se muestra automáticamente al tener contenido */
+}
+
+.preview-box img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* ============================================================
+   📑 LISTADO DE ELEMENTOS CARGADOS (ADMIN VIEW)
+   ============================================================ */
 
 #lista-avisos {
   display: flex;
@@ -58,44 +100,8 @@
 .aviso-admin {
   padding: 15px;
   border-radius: 15px;
-  background: rgba(255,255,255,0.05);
-}
-
-.aviso-admin h3 {
-  color: #00ffff;
-}
-
-.acciones {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  border: none;
-  padding: 8px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.btn-editar {
-  background: #00ffff;
-}
-
-.btn-eliminar {
-  background: #ff0055;
-  color: white;
-}
-.img-admin {
-  width: 100%;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.aviso-admin {
-  padding: 15px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,0,255,0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 0, 255, 0.2);
   transition: 0.3s;
 }
 
@@ -109,43 +115,64 @@
   margin: 0;
 }
 
+/* 🔘 BOTONES DE ACCIÓN (EDITAR / ELIMINAR) */
 .acciones {
+  display: flex;
+  gap: 10px;
   margin-top: 10px;
+}
+
+.btn {
+  border: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-editar {
+  background: #00ffff;
+  color: #000;
 }
 
 .btn-eliminar {
   background: #ff0055;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 10px;
   color: white;
-  cursor: pointer;
-}
-.preview-box {
-  margin-top: 20px;
-  padding: 20px;
-  border: 2px dashed #00ffff;
-  border-radius: 15px;
-  display: none;
 }
 
-.preview-box img {
-  width: 100%;
-  border-radius: 10px;
+/* ============================================================
+   🛡️ AJUSTES DE SEGURIDAD VISUAL (ANTI-ROMPIBLE)
+   ============================================================ */
+
+/* Esto evita que si alguien escribe un texto larguísimo sin espacios, 
+   la tarjeta se estire y rompa la página */
+.card-articulo p,
+.card-destacada p,
+.card-aviso p,
+.aviso-admin p {
+  word-break: break-word; /* Rompe las palabras largas */
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
+/* Si marcas algo como destacado en el panel admin */
 .destacado {
   border: 2px solid gold !important;
   box-shadow: 0 0 20px gold !important;
 }
-.preview-box:not(:empty) {
-  display: block !important;
+
+/* Imagen para los ítems en la lista del admin */
+.img-admin {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
-.card-articulo p,
-.card-destacada p,
-.card-aviso p {
-  word-break: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
+/* 📱 ADAPTACIÓN PARA MÓVILES */
+@media (max-width: 768px) {
+  .admin-grid {
+    grid-template-columns: 1fr; /* Una sola columna en celulares */
+  }
 }

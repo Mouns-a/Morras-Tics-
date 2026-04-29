@@ -36,7 +36,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =========================
   function render(lista) {
     contenedor.innerHTML = "";
-
+  console.log("Avisos:", lista);
+  
     if (lista.length === 0) {
       contenedor.innerHTML = `
         <div class="empty-state">
@@ -69,13 +70,26 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="contador" data-fecha="${aviso.fecha}"></div>
 
           ${aviso.urgente ? '<span class="badge">🔥 URGENTE</span>' : ''}
+
+          ${
+            aviso.link &&
+            aviso.link.trim() !== "" &&
+            aviso.link !== "undefined" &&
+            aviso.link !== "{}"
+              ? `
+            <a href="${aviso.link}" target="_blank" class="btn-aviso-link">
+              🔗 Ver más información
+            </a>
+          `
+              : ''
+          }
         </div>
       `;
 
       contenedor.appendChild(card);
     });
 
-    // ✨ Animación
+    // ✨ Animación de entrada
     setTimeout(() => {
       document.querySelectorAll(".card-aviso").forEach(card => {
         card.classList.add("visible");
@@ -92,12 +106,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const contadores = document.querySelectorAll(".contador");
 
     contadores.forEach(contador => {
-      const objetivo = new Date(fechaMeta + "T23:59:59");
+      const fechaMeta = contador.dataset.fecha;
       if (!fechaMeta) return;
 
       const intervalo = setInterval(() => {
         const ahora = new Date();
-        const objetivo = new Date(fechaMeta);
+        const objetivo = new Date(fechaMeta + "T23:59:59");
         const diff = objetivo - ahora;
 
         if (diff <= 0) {
@@ -122,7 +136,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =========================
   botonesFiltro.forEach(btn => {
     btn.addEventListener("click", () => {
-
       document.querySelector(".filtros .activo")?.classList.remove("activo");
       btn.classList.add("activo");
 
